@@ -1,0 +1,27 @@
+.content-container {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    padding: 0 10px; 
+}
+
+button.mat-flat-button {
+    background-color: white;
+    color: black; 
+    border: none; 
+    padding: auto;
+    border-radius: 0px;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+    margin-right: 20px; 
+
+}
+
+button.mat-flat-button:hover {
+
+    background-color: orangered;
+}
+
+.element {
+    margin-right: 5px; ;
+}

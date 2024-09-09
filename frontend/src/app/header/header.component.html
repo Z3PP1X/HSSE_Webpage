@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <div class="logo-container">
+    <button mat-mini-fab (click)="sidebarService.onMenuClick()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <img src="assets/SIXT_Logo_Neg_RGB.svg" alt="Sixt logo" />
+  </div>
+  <div class="spacer"></div>
+  <div class="button-container">
+    <button mat-button class="custom-button">Test</button>
+    <button mat-button class="custom-button">Test</button>
+    <button mat-button class="custom-button">Test</button>
+    <button mat-button class="custom-button">Test</button>
+    <button mat-button class="custom-button">Test</button>
+    <button mat-button class="custom-button">Test</button>
+    <button mat-button class="custom-button">Test</button>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div>
+    <app-user></app-user>
+  </div>
+</mat-toolbar>
+
+@if (sidebarService.sideBarSignal()) {
+
+<app-sidebar/>
+
+}
