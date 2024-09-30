@@ -3,13 +3,13 @@ from django.utils.deprecation import MiddlewareMixin
 
 _user = threading.local()
 
-def get_current_user():
 
+def get_current_user():
 
     return getattr(_user, 'user', None)
 
-class CurrentUserMiddleware(MiddlewareMixin):
 
+class CurrentUserMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         _user.user = request.user
@@ -18,4 +18,5 @@ class CurrentUserMiddleware(MiddlewareMixin):
 
         _user.user = None
         return response
+
     

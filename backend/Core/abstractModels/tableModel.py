@@ -7,10 +7,12 @@ from middleware.currentUser import get_current_user
 class Table(models.Model):
 
     sys_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    created_by = models.ForeignKey(User,
-                                related_name='created_%(class)s_set',
-                                on_delete=models.SET_NULL,
-                                null=True, editable=False)
+    created_by = models.ForeignKey(
+        User,
+        related_name='created_%(class)s_set',
+        on_delete=models.SET_NULL,
+        null=True, editable=False
+        )
     updated_by = models.ForeignKey(
         User,
         related_name='updated_%(class)s_set',
@@ -30,4 +32,5 @@ class Table(models.Model):
         if current_user:
             self.updated_by = current_user
         super().save(*args, **kwargs)
+
         

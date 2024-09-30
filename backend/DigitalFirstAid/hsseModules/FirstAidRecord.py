@@ -2,8 +2,8 @@ from django.db import models
 from Core.abstractModels import tableModel
 from django.contrib.auth.models import User
 
-class FirstAidRecord (tableModel.Table):
 
+class FirstAidRecord (tableModel.Table):
 
     Active = models.BooleanField(default=True),
     RequestedFor = models.ForeignKey(
@@ -48,3 +48,4 @@ class FirstAidRecord (tableModel.Table):
     PersonalProtectiveEquipment = models.IntegerField(
         choices=PersonalProtectiveEquipment.choices)
     WorkContunuation = models.BooleanField(null=False)
+    
