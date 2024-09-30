@@ -18,6 +18,3 @@ class CurrentUserMiddleware(MiddlewareMixin):
 
         _user.user = None
         return response
-
-
-    
