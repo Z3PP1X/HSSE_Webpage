@@ -33,4 +33,5 @@ class Table(models.Model):
             self.updated_by = current_user
         super().save(*args, **kwargs)
 
+
         

@@ -48,4 +48,3 @@ class FirstAidRecord (tableModel.Table):
     PersonalProtectiveEquipment = models.IntegerField(
         choices=PersonalProtectiveEquipment.choices)
     WorkContunuation = models.BooleanField(null=False)
-    
