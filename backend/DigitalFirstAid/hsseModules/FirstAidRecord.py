@@ -1,8 +1,8 @@
 from django.db import models
-from abstractModels import TableModel
+from Core.abstractModels import tableModel
 from django.contrib.auth.models import User
 
-class FirstAidRecord (TableModel.Table):
+class FirstAidRecord (tableModel.Table):
 
     Active = models.BooleanField(default=True),
     RequestedFor = models.ForeignKey(User, null=False, on_delete=models.SET_NULL)

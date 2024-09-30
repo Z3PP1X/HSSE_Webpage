@@ -20,8 +20,5 @@ export const DUMMY_USERS = [
         id: "5",
         name: "Jessica Matthes",
     },
-    {
-        id: "hzwrm",
-        name: "Holzwurm",
-    },
+    
 ];

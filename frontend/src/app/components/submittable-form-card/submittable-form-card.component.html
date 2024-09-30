@@ -1,0 +1,19 @@
+<mat-card>
+  <div class="category">
+    @for (category of dataModel(); track category.id ) {
+      <label>{{category.cat}}</label>
+      
+      @for (question of category.questions; track question.sys_id) {
+        <mat-form-field>
+          <mat-label>{{question.text}}</mat-label>
+          <input matInput />
+        </mat-form-field>
+      }
+    
+    }
+    
+    
+  </div>
+
+  <button mat-stroked-button>Submit</button>
+</mat-card>

@@ -1,6 +1,6 @@
 <mat-toolbar>
   <div class="logo-container">
-    <button mat-mini-fab (click)="sidebarService.onMenuClick()">
+    <button mat-mini-fab (click)="ontoggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
 
@@ -24,8 +24,3 @@
   </div>
 </mat-toolbar>
 
-@if (sidebarService.sideBarSignal()) {
-
-<app-sidebar/>
-
-}

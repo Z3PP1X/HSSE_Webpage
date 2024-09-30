@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { DUMMY_USERS } from '../dummy-user';
+import { DUMMY_USERS } from '../../dummy-user';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 

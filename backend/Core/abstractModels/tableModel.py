@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 from django.contrib.auth.models import User
-from Middleware.currentUser import get_current_user
+from middleware.currentUser import get_current_user
 
 
 class Table(models.Model):
