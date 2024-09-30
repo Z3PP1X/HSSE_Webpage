@@ -4,13 +4,14 @@ from django.contrib.auth.models import User
 
 class FirstAidRecord (tableModel.Table):
 
+
     Active = models.BooleanField(default=True),
-    RequestedFor = models.ForeignKey(User, null=False, on_delete=models.SET_NULL)
+    RequestedFor = models.ForeignKey(
+        User, null=False, on_delete=models.SET_NULL)
     IncidentDateTime = models.DateTimeField(null=False)
     RequestedForManager = models.ForeignKey(null=False)
 
     class TypeOfIncident(models.IntegerChoices):
-        
         COMMUTE = 1, "Commute"
         WORKPLACE = 2, "Workplace"
 
@@ -18,13 +19,13 @@ class FirstAidRecord (tableModel.Table):
     IncidentLocation = models.JSONField(null=False)
     InjuryOccurence = models.BooleanField(default=False)
 
-    ## First Aid Measures
+    # First Aid Measures
 
     AccidentWitness = models.JSONField()
     AffectedBodyParts = models.JSONField()
     UsedBandageMaterial = models.JSONField()
 
-    ## Accident Description
+    # Accident Description
 
     class AccidentCause(models.IntegerChoices):
 
@@ -44,15 +45,6 @@ class FirstAidRecord (tableModel.Table):
         TEST = 1, "Test"
 
     AccidentCause = models.IntegerField(choices=AccidentCause.choices)
-    PersonalProtectiveEquipment = models.IntegerField(choices = PersonalProtectiveEquipment.choices)
+    PersonalProtectiveEquipment = models.IntegerField(
+        choices=PersonalProtectiveEquipment.choices)
     WorkContunuation = models.BooleanField(null=False)
-
-
-
-
-
-
-
-
-
-    
