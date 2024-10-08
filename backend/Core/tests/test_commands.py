@@ -8,9 +8,9 @@ from psycopg2 import OperationalError as Psycopg2Error
 from django.core.management import call_command
 from django.db.utils import OperationalError
 from django.test import SimpleTestCase
+from Core.management.commands.wait_for_db import Command
 
-
-@patch('core.management.commands.wait_for_db.Command.check')
+@patch('Core.management.commands.wait_for_db.Command.check')
 class CommandTests(SimpleTestCase):
     """Test commands."""
 
