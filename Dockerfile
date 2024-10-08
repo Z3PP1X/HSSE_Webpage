@@ -13,10 +13,18 @@ EXPOSE 8000
 ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends postgresql-client && \
+    apt-get install -y --no-install-recommends \
+        build-essential libpq-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
-    if [ $DEV = "true" ]; \
+    if [ "$DEV" = "true" ]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
+    apt-get remove --purge -y build-essential libpq-dev &&\
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp && \
     adduser \
         --disabled-password \
