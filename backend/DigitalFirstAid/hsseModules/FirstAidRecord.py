@@ -1,30 +1,26 @@
 from django.db import models
 from Core.abstractModels import tableModel
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+
 
 
 class FirstAidRecord (tableModel.Table):
-
-    Active = models.BooleanField(default=True),
+    """First Aid Record Model"""
+    Active = models.BooleanField(default=True)
     RequestedFor = models.ForeignKey(
-        User, null=False, on_delete=models.SET_NULL)
+        get_user_model(), null=True, on_delete=models.SET_NULL)
     IncidentDateTime = models.DateTimeField(null=False)
-    RequestedForManager = models.ForeignKey(null=False)
 
     class TypeOfIncident(models.IntegerChoices):
         COMMUTE = 1, "Commute"
         WORKPLACE = 2, "Workplace"
 
     TypeOfIncident = models.IntegerField(choices=TypeOfIncident.choices)
-    IncidentLocation = models.JSONField(null=False)
-    InjuryOccurence = models.BooleanField(default=False)
+    IncidentLocation = models.JSONField(null=True)
+    InjuryOccurence = models.BooleanField(default=True)
 
     # First Aid Measures
-
-    AccidentWitness = models.JSONField()
-    AffectedBodyParts = models.JSONField()
-    UsedBandageMaterial = models.JSONField()
-
     # Accident Description
 
     class AccidentCause(models.IntegerChoices):
@@ -47,4 +43,6 @@ class FirstAidRecord (tableModel.Table):
     AccidentCause = models.IntegerField(choices=AccidentCause.choices)
     PersonalProtectiveEquipment = models.IntegerField(
         choices=PersonalProtectiveEquipment.choices)
-    WorkContunuation = models.BooleanField(null=False)
+    WorkContinuation = models.BooleanField(null=False)
+
+

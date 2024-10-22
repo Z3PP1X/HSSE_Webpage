@@ -1,1 +1,1 @@
-# Create your models here.
+from .hsseModules.FirstAidRecord import FirstAidRecord  # noqa
