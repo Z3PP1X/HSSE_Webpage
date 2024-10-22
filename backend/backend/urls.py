@@ -24,11 +24,11 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("ehs/", include("DigitalFirstAid.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path("api/docs/",
          SpectacularSwaggerView.as_view(url_name="api-schema"),
          name="api-docs",
          ),
     path("api/user/", include("User.urls")),
+    path('api/digitalfirstaid/', include('DigitalFirstAid.urls')),
 ]

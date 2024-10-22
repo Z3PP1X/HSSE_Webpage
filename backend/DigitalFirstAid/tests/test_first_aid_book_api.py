@@ -16,7 +16,7 @@ from ..hsseModules.FirstAidRecord import FirstAidRecord
 
 from DigitalFirstAid.serializers import FirstAidRecordSerializer
 
-DIGITAL_FIRST_AID_BOOK_URL = reverse('DigitalFirstAid:firstaidrecord-list')
+DIGITAL_FIRST_AID_BOOK_URL = reverse('digitalfirstaid:firstaidrecord-list')
 
 def create_first_aid_record(user, **params):
     """Create a first aid record."""
@@ -33,7 +33,7 @@ def create_first_aid_record(user, **params):
         'WorkContinuation': True,
     }
     defaults.update(params)
-    first_aid_record = FirstAidRecord.objects.create(user=user, **defaults)
+    first_aid_record = FirstAidRecord.objects.create(**defaults)
     return first_aid_record
 
 class PublicFirstAidRecordAPITests(TestCase):
@@ -83,8 +83,7 @@ class PrivateFirstAidRecordAPITests(TestCase):
 
         res = self.client.get(DIGITAL_FIRST_AID_BOOK_URL)
 
-        first_aid_record = FirstAidRecord.objects.filter(user=self.user)
+        first_aid_record = FirstAidRecord.objects.filter(RequestedFor=self.user)
         serializer = FirstAidRecordSerializer(first_aid_record, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
