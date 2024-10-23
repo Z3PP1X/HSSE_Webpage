@@ -9,5 +9,4 @@ class FirstAidRecordAdmin(TableAdmin):
     list_display = ('sys_id', 'created_on', 'created_by')
 
 
-
 admin.site.register(FirstAidRecord, FirstAidRecordAdmin)

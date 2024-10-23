@@ -3,8 +3,6 @@ from Core.abstractModels import tableModel
 from django.contrib.auth import get_user_model
 
 
-
-
 class FirstAidRecord (tableModel.Table):
     """First Aid Record Model"""
     Active = models.BooleanField(default=True)
@@ -44,5 +42,3 @@ class FirstAidRecord (tableModel.Table):
     PersonalProtectiveEquipment = models.IntegerField(
         choices=PersonalProtectiveEquipment.choices)
     WorkContinuation = models.BooleanField(null=False)
-
-

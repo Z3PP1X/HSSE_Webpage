@@ -39,7 +39,7 @@ class TestFirstAidRecord(TestCase):
         self.assertEqual(first_aid_record.Active, True)
 
     def test_foreign_key_set_null_on_user_delete(self):
-        """Test that a first aid record is set to null when the user is deleted."""
+        """Test that a record is set to null when the user is deleted."""
         user = get_user_model().objects.create_user(
             'test@example.com',
             'testpass123',
@@ -59,7 +59,3 @@ class TestFirstAidRecord(TestCase):
         user.delete()
         first_aid_record.refresh_from_db()
         self.assertIsNone(first_aid_record.RequestedFor)
-
-
-
-

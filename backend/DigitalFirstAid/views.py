@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from .hsseModules.FirstAidRecord import FirstAidRecord
 from DigitalFirstAid import serializers
 
+
 class FirstAidRecordViewSet(viewsets.ModelViewSet):
     """
     View for manage recipe APIs.
@@ -20,4 +21,5 @@ class FirstAidRecordViewSet(viewsets.ModelViewSet):
     lookup_field = ('sys_id')
 
     def get_queryset(self):
-        return self.queryset.filter(RequestedFor=self.request.user).order_by('-created_on')
+        return self.queryset.filter(
+            RequestedFor=self.request.user).order_by('-created_on')

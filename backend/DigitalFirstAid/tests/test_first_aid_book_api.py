@@ -2,7 +2,6 @@
 Tests for digital first aid book APIs.
 """
 
-from decimal import Decimal
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -17,6 +16,7 @@ from ..hsseModules.FirstAidRecord import FirstAidRecord
 from DigitalFirstAid.serializers import FirstAidRecordSerializer
 
 DIGITAL_FIRST_AID_BOOK_URL = reverse('digitalfirstaid:firstaidrecord-list')
+
 
 def create_first_aid_record(user, **params):
     """Create a first aid record."""
@@ -36,6 +36,7 @@ def create_first_aid_record(user, **params):
     first_aid_record = FirstAidRecord.objects.create(**defaults)
     return first_aid_record
 
+
 class PublicFirstAidRecordAPITests(TestCase):
     """Test unauthenticated first aid record API access."""
 
@@ -47,6 +48,7 @@ class PublicFirstAidRecordAPITests(TestCase):
         res = self.client.get(DIGITAL_FIRST_AID_BOOK_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateFirstAidRecordAPITests(TestCase):
     """Test authenticated API requests."""
@@ -72,7 +74,7 @@ class PrivateFirstAidRecordAPITests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     def test_recipe_list_limited_to_user(self):
-        """Test that only first aid records for authenticated user are returned."""
+        """Test that only records for authenticated user are returned."""
 
         user2 = get_user_model().objects.create_user(
             'other@example.com',
@@ -83,7 +85,8 @@ class PrivateFirstAidRecordAPITests(TestCase):
 
         res = self.client.get(DIGITAL_FIRST_AID_BOOK_URL)
 
-        first_aid_record = FirstAidRecord.objects.filter(RequestedFor=self.user)
+        first_aid_record = FirstAidRecord.objects.filter(
+            RequestedFor=self.user)
         serializer = FirstAidRecordSerializer(first_aid_record, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)

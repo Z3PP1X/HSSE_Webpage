@@ -3,7 +3,6 @@ import uuid
 from django.contrib.auth import get_user_model
 
 
-
 class Table(models.Model):
 
     sys_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)

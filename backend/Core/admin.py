@@ -10,7 +10,7 @@ from User import models
 
 
 class TableAdmin(admin.ModelAdmin):
-    """Define readonly fields for all models that implement the basic table model class."""
+    """Define readonly fields for all models."""
 
     readonly_fields = ['created_by', 'updated_by', 'updated_on', 'created_on']
 
