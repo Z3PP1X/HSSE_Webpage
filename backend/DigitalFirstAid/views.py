@@ -17,6 +17,7 @@ class FirstAidRecordViewSet(viewsets.ModelViewSet):
     queryset = FirstAidRecord.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    lookup_field = ('sys_id')
 
     def get_queryset(self):
         return self.queryset.filter(RequestedFor=self.request.user).order_by('-created_on')

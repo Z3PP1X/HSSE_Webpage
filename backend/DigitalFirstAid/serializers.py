@@ -12,7 +12,7 @@ class FirstAidRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = FirstAidRecord
         fields = (
-            'id', 'RequestedFor', 'IncidentDateTime', 'TypeOfIncident', 'InjuryOccurence',
+            'sys_id', 'RequestedFor', 'IncidentDateTime', 'TypeOfIncident', 'InjuryOccurence',
             'AccidentCause', 'PersonalProtectiveEquipment', 'WorkContinuation',
         )
-        read_only_fields = ('id',)
+        read_only_fields = ('sys_id',)

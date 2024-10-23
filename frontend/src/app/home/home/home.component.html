@@ -11,9 +11,15 @@
     </ul>
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
+    <div class="hero-container">
+      <img src="porsche2.jpg" class="background-image" alt="Ooops!">
+      <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
+      <app-search-component></app-search-component>
+    </div>
+
     <app-call-to-action-banner
       [inputContent]="ehsContent"
     ></app-call-to-action-banner>
+    <div class="testcontainer"></div>
   </mat-sidenav-content>
 </mat-sidenav-container>
