@@ -8,6 +8,12 @@ mat-toolbar {
   box-sizing: border-box;
 }
 
+.spacer-left{
+  flex-grow: 1;
+}
+.spacer-right{
+  flex-grow: 1;
+}
 .logo-container {
   display: flex;
   align-items: center;
@@ -19,6 +25,7 @@ mat-toolbar {
   margin-right: 20px;
   background-color: transparent;
   border: none;
+
 }
 
 .logo-container mat-icon {
@@ -44,7 +51,7 @@ mat-toolbar {
 
 .button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end;;
 }
 
 .custom-button {

@@ -12,7 +12,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   standalone: true,
   imports: [MatButtonModule, MatInputModule, MatIconModule, MatCardModule, HeaderComponent, MatSidenavModule],
   templateUrl: './search-component.component.html',
-  styleUrl: './search-component.component.scss'
+  styleUrls: ['./search-component.component.scss',]
+
 })
 export class SearchComponentComponent {
 
