@@ -1,10 +1,4 @@
-.testcontainer{
-    display: flex;
-    width: 100%;
-    height: 250px;
-    background-color: red;
-}
-
+@use '../../../variables' as *;
 .hero-container {
     position: relative;
     display: flex;
@@ -37,3 +31,52 @@
         z-index: 2;
     }
 }
+
+.custom-sidenav {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); // Schatten rechts
+
+    // Leerer Raum links
+    padding-left: 250px;
+
+    .close-button {
+      font-size: 24px;
+      background: none;
+      border: none;
+      padding: 16px 16px 16px 0; // Abstand zur linken Seite entfernen
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .sidenav-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 20px; // Abstand zwischen den Links
+      }
+
+      a {
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+        color: black; // Standardfarbe der Links
+        text-decoration: none;
+        padding-left: 20px;
+        display: block;
+
+        &:hover {
+          color: $sixt-primary; // Hover-Farbe
+        }
+
+        &:nth-child(2) {
+          color: $sixt-primary; // Zweiter Link ("Share") ist standardmäßig orange
+          font-weight: bold;
+        }
+      }
+    }
+  }
+

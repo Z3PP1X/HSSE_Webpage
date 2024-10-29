@@ -1,8 +1,9 @@
 <mat-sidenav-container [hasBackdrop]="true">
-  <mat-sidenav #sidenav mode="over">
-    <button mat-flat-button (click)="sidenav.toggle()"></button>
+  <mat-sidenav #sidenav mode="over" class="custom-sidenav">
 
-    <ul>
+    <button mat-flat-button (click)="sidenav.toggle()" class="close-button"></button>
+
+    <ul class="sidenav-menu">
       <li><a href="#">Link 1</a></li>
       <li><a href="#">Link 2</a></li>
       <li><a href="#">Link 3</a></li>
@@ -20,6 +21,6 @@
     <app-call-to-action-banner
       [inputContent]="ehsContent"
     ></app-call-to-action-banner>
-    <div class="testcontainer"></div>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

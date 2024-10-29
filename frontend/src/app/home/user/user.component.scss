@@ -1,28 +1,28 @@
+@use '../../../variables' as *;
 
-.content-container {
-    align-items: center;
-    justify-content: space-between;
-    display: flex;
-    padding: 0 10px;
-}
-
-button {
-    background-color: orangered;
-    color: black;
-    border: none;
-    padding: auto;
-    border-radius: 0px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 20px;
-}
+.button-container{
 
 
-button.mat-flat-button:hover {
+    button {
+        background-color: $sixt-primary;
+        color: white;
+        border: none;
+        padding: auto;
+        border-radius: $button-border-radius;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 20px;
 
-    background-color: orangered;
-}
+        .content-container {
+            align-items: center;
+            justify-content: space-between;
+            display: flex;
+            padding: 0 10px;
+        }
 
-.element {
-    margin-right: 5px; ;
+        .element {
+            padding: 3px;
+        }
+    }
+
 }
