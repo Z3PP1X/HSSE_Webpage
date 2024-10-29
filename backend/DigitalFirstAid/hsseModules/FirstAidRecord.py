@@ -8,18 +8,17 @@ class FirstAidRecord (tableModel.Table):
     Active = models.BooleanField(default=True)
     RequestedFor = models.ForeignKey(
         get_user_model(), null=True, on_delete=models.SET_NULL)
-    IncidentDateTime = models.DateTimeField(null=False)
+    IncidentDateTime = models.DateTimeField(null=False, blank=False)
 
     class TypeOfIncident(models.IntegerChoices):
         COMMUTE = 1, "Commute"
         WORKPLACE = 2, "Workplace"
 
-    TypeOfIncident = models.IntegerField(choices=TypeOfIncident.choices)
-    IncidentLocation = models.JSONField(null=True)
-    InjuryOccurence = models.BooleanField(default=True)
-
-    # First Aid Measures
-    # Accident Description
+    TypeOfIncident = models.IntegerField(
+                    choices=TypeOfIncident.choices,
+                    blank=False)
+    IncidentLocation = models.JSONField(blank=False, default=dict)
+    InjuryOccurence = models.BooleanField()
 
     class AccidentCause(models.IntegerChoices):
 
@@ -34,11 +33,23 @@ class FirstAidRecord (tableModel.Table):
         UNSECUREDOPENING = 9, "Unsecured floor opening"
         SHELVING = 10, "Unstable shelving"
 
+    AccidentDescription = models.TextField(blank=False)
+
+    AccidentWitness = models.JSONField(null=True)
+    FirstAidMeasures = models.JSONField(null=True)
+
     class PersonalProtectiveEquipment(models.IntegerChoices):
 
-        TEST = 1, "Test"
+        NOEQUIPMENT = 0, "No Equipment"
+        GLOVES = 1, "Gloves"
+        GLASSES = 2, "Glasses"
+        SAFETYWEST = 3, "High-Visibility West"
+        MASK = 4, "Mask"
+        SAFETYSHOES = 5, "Safety Shoes"
+        HARDHAT = 6, "Hard Hat"
+        HEARINGPROTECTION = 7, "Hearing Protection"
 
     AccidentCause = models.IntegerField(choices=AccidentCause.choices)
     PersonalProtectiveEquipment = models.IntegerField(
-        choices=PersonalProtectiveEquipment.choices)
-    WorkContinuation = models.BooleanField(null=False)
+        choices=PersonalProtectiveEquipment.choices, blank=False, null=True)
+    WorkContinuation = models.BooleanField()
