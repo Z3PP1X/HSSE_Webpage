@@ -35,8 +35,8 @@ class FirstAidRecord (tableModel.Table):
 
     AccidentDescription = models.TextField(blank=False)
 
-    AccidentWitness = models.JSONField(null=True)
-    FirstAidMeasures = models.JSONField(null=True)
+    AccidentWitness = models.JSONField(blank=True, default=dict)
+    FirstAidMeasures = models.JSONField(blank=True, default=dict)
 
     class PersonalProtectiveEquipment(models.IntegerChoices):
 
@@ -49,7 +49,7 @@ class FirstAidRecord (tableModel.Table):
         HARDHAT = 6, "Hard Hat"
         HEARINGPROTECTION = 7, "Hearing Protection"
 
-    AccidentCause = models.IntegerField(choices=AccidentCause.choices)
+    AccidentCause = models.IntegerField(blank=False, choices=AccidentCause.choices)
     PersonalProtectiveEquipment = models.IntegerField(
-        choices=PersonalProtectiveEquipment.choices, blank=False, null=True)
+        choices=PersonalProtectiveEquipment.choices, blank=True, null=True)
     WorkContinuation = models.BooleanField()

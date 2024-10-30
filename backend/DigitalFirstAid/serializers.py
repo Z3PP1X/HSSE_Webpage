@@ -7,6 +7,7 @@ from rest_framework import serializers
 from .hsseModules.FirstAidRecord import FirstAidRecord
 
 
+
 class FirstAidRecordSerializer(serializers.ModelSerializer):
     """Serializer for the first aid record object."""
 
@@ -19,3 +20,7 @@ class FirstAidRecordSerializer(serializers.ModelSerializer):
             'WorkContinuation', 'AccidentDescription',
             'AccidentWitness', 'FirstAidMeasures',
         )
+
+
+
+
