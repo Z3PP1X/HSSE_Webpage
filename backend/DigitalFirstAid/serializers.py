@@ -3,11 +3,8 @@ Serializers for the digital first aid book apis.
 """
 
 from rest_framework import serializers
-from rest_framework.renderers import JSONRenderer
 
 from .hsseModules.FirstAidRecord import FirstAidRecord
-
-
 
 
 class FirstAidRecordSerializer(serializers.ModelSerializer):
@@ -22,7 +19,3 @@ class FirstAidRecordSerializer(serializers.ModelSerializer):
             'WorkContinuation', 'AccidentDescription',
             'AccidentWitness', 'FirstAidMeasures',
         )
-
-
-
-
