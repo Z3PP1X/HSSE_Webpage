@@ -11,12 +11,13 @@ from rest_framework.response import Response
 
 from .hsseModules.FirstAidRecord import FirstAidRecord
 from . import serializers
-from drf_spectacular.utils import extend_schema
+
+
 
 
 class FirstAidRecordViewSet(viewsets.ModelViewSet):
     """
-    View for manage recipe APIs.
+    Endpoint for CRUD operations on the DFA Model.
     """
     serializer_class = serializers.FirstAidRecordSerializer
     queryset = FirstAidRecord.objects.all()
@@ -28,3 +29,11 @@ class FirstAidRecordViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(
             RequestedFor=self.request.user).order_by('-created_on')
 
+class MetaRecordView(APIView):
+    """Endpoint for generating dynamic forms in the frontend"""
+
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        """Return the metadata for the First Aid Record"""

@@ -1,6 +1,7 @@
 from django.db import models
 from Core.abstractModels import tableModel
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 
 
 class FirstAidRecord (tableModel.Table):
@@ -8,7 +9,7 @@ class FirstAidRecord (tableModel.Table):
     Active = models.BooleanField(default=True)
     RequestedFor = models.ForeignKey(
         get_user_model(), null=True, on_delete=models.SET_NULL)
-    IncidentDateTime = models.DateTimeField(null=False, blank=False)
+    IncidentDateTime = models.DateTimeField(null=False, blank=False, verbose_name="When did the incident occur?")
 
     class TypeOfIncident(models.IntegerChoices):
         COMMUTE = 1, "Commute"
@@ -16,9 +17,9 @@ class FirstAidRecord (tableModel.Table):
 
     TypeOfIncident = models.IntegerField(
                     choices=TypeOfIncident.choices,
-                    blank=False)
-    IncidentLocation = models.JSONField(blank=False, default=dict)
-    InjuryOccurence = models.BooleanField()
+                    blank=False, verbose_name=_("Did the incident occur during commute or at the workplace?"))
+    IncidentLocation = models.JSONField(blank=False, default=dict, verbose_name=_("Where did the incident occur?"))
+    InjuryOccurence = models.BooleanField(verbose_name=_("Did the incident result in an injury?"))
 
     class AccidentCause(models.IntegerChoices):
 
@@ -33,7 +34,7 @@ class FirstAidRecord (tableModel.Table):
         UNSECUREDOPENING = 9, "Unsecured floor opening"
         SHELVING = 10, "Unstable shelving"
 
-    AccidentDescription = models.TextField(blank=False)
+    AccidentDescription = models.TextField(blank=False, verbose_name=_("Please describe the incident"))
 
     AccidentWitness = models.JSONField(blank=True, default=dict)
     FirstAidMeasures = models.JSONField(blank=True, default=dict)
@@ -49,7 +50,7 @@ class FirstAidRecord (tableModel.Table):
         HARDHAT = 6, "Hard Hat"
         HEARINGPROTECTION = 7, "Hearing Protection"
 
-    AccidentCause = models.IntegerField(blank=False, choices=AccidentCause.choices)
+    AccidentCause = models.IntegerField(blank=False, choices=AccidentCause.choices, verbose_name=_("What caused the accident?"))
     PersonalProtectiveEquipment = models.IntegerField(
-        choices=PersonalProtectiveEquipment.choices, blank=True, null=True)
-    WorkContinuation = models.BooleanField()
+        choices=PersonalProtectiveEquipment.choices, blank=True, null=True, verbose_name=_("What protective equipment was used?"))
+    WorkContinuation = models.BooleanField(verbose_name=_("Was work continued after the incident?"))

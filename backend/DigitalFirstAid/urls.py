@@ -16,5 +16,6 @@ app_name = 'digitalfirstaid'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('metadata/', views.MetaRecordView.as_view(), name='metadata'),
 
 ]
