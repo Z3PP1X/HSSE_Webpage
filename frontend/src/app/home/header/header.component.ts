@@ -3,7 +3,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UserComponent } from '../user/user.component';
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
 
 
 @Component({
@@ -14,6 +16,9 @@ import { Injectable} from '@angular/core';
     MatButtonModule,
     MatIconModule,
     UserComponent,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
   ],
   providers: [],
   templateUrl: './header.component.html',
@@ -21,11 +26,10 @@ import { Injectable} from '@angular/core';
 })
 export class HeaderComponent {
 
-  toggleSidenav = output<boolean>(); 
+  toggleSidenav = output<boolean>();
 
   ontoggleSidenav() {
     this.toggleSidenav.emit(true);
     console.log("Sidebar event triggered")
   }
-
 }

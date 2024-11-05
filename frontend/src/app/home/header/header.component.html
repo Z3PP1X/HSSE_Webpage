@@ -1,28 +1,20 @@
 <mat-toolbar>
-  <div class="spacer-left"></div>
-  <div class="logo-container">
+  <div class="wrapper">
     <button mat-mini-fab (click)="ontoggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
 
-    <img src="assets/SIXT_Logo_Neg_RGB.svg" alt="Sixt logo" />
+    <img [routerLink]="['']"src="assets/SIXT_Logo_Neg_RGB.svg" alt="Sixt logo"/>
   </div>
-  <div class="spacer"></div>
   <div class="button-container">
-    <button mat-button class="custom-button">Test</button>
-    <button mat-button class="custom-button">Test</button>
-    <button mat-button class="custom-button">Test</button>
-    <button mat-button class="custom-button">Test</button>
-    <button mat-button class="custom-button">Test</button>
-    <button mat-button class="custom-button">Test</button>
-    <button mat-button class="custom-button">Test</button>
+    <ul>
+    <li><a href="#0">Test</a></li>
+    <li><a href="#0">Test</a></li>
+    <li><a href="#0">Test</a></li></ul>
   </div>
 
-  <div class="spacer"></div>
-
-  <div>
     <app-user></app-user>
-  </div>
-  <div class="spacer-right"></div>
+
+
 </mat-toolbar>
 

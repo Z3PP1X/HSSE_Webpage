@@ -6,12 +6,13 @@
     button {
         background-color: $sixt-primary;
         color: white;
+        font-size: 0.9rem;
         border: none;
         padding: auto;
         border-radius: $button-border-radius;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        margin-right: 20px;
+
 
         .content-container {
             align-items: center;

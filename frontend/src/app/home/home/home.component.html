@@ -1,9 +1,11 @@
 <mat-sidenav-container [hasBackdrop]="true">
-  <mat-sidenav #sidenav mode="over" class="custom-sidenav">
-
-    <button mat-flat-button (click)="sidenav.toggle()" class="close-button"></button>
-
-    <ul class="sidenav-menu">
+  <mat-sidenav #sidenav mode="over">
+    <div class="sidenav-wrapper">
+    <button mat-icon-button (click)="sidenav.toggle()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+    <ul>
       <li><a href="#">Link 1</a></li>
       <li><a href="#">Link 2</a></li>
       <li><a href="#">Link 3</a></li>
@@ -12,8 +14,7 @@
     </ul>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div class="hero-container">
-      <img src="porsche2.jpg" class="background-image" alt="Ooops!">
+    <div class="content-wrapper">
       <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
       <app-search-component></app-search-component>
     </div>

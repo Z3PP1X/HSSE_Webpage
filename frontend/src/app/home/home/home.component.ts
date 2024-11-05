@@ -4,11 +4,12 @@ import { CallToActionBannerComponent } from '../../components/call-to-action-ban
 import { SearchComponentComponent } from '../search-component/search-component.component';
 import { EHS_BANNER_CONTENT } from '../../../dummy-ehs-banner';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, CallToActionBannerComponent, MatSidenavModule, SearchComponentComponent],
+  imports: [HeaderComponent, CallToActionBannerComponent, MatSidenavModule, SearchComponentComponent, MatIconModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

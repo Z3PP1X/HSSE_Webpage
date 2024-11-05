@@ -1,19 +1,34 @@
-<mat-card>
-  <div class="category">
-    @for (category of dataModel(); track category.id ) {
-      <label>{{category.cat}}</label>
-
-      @for (question of category.questions; track question.sys_id) {
-        <mat-form-field>
-          <mat-label>{{question.text}}</mat-label>
-          <input matInput />
-        </mat-form-field>
-      }
-
-    }
+<body>
+  <mat-card>
+    <mat-card-header>
+      <div class="header-container">
+        <mat-card-title>Erstmeldung eines Arbeitsbezogenen Unfalls</mat-card-title>
+        <img mat-card-image src="/assets/SIXT_Logo_Pos_RGB.svg">
+      </div>
 
 
-  </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="category">
+        @for (category of dataModel(); track category.id ) {
+        <label>{{ category.cat }}</label>
 
-  <button mat-stroked-button>Submit</button>
-</mat-card>
+        @for (question of category.questions; track question.sys_id) {
+
+
+            <div class="entryarea">
+              <input type="text" required>
+              <div class="labelline">
+                <p>{{question.text}}</p>
+              </div>
+            </div>
+
+        } }
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions
+      ><button mat-flat-button>Submit</button></mat-card-actions
+    >
+  </mat-card>
+</body>

@@ -14,7 +14,7 @@ export const DUMMY_QUESTIONS = [
         cat: "Erste Hilfe Bericht",
         questions: [
             { sys_id: "q5", text: "Wer hat Erste Hilfe geleistet?" },
-            { sys_id: "q6", text: "Welche Erste-Hilfe-Maßnahmen wurden durchgeführt?" },
+            { sys_id: "q6", text: "Welche Erste-Hilfe-Maßnahmen wurden durchgeführt? Wir test" },
             { sys_id: "q7", text: "Wurde ein Rettungsdienst verständigt?" },
             { sys_id: "q8", text: "Welche Materialien wurden verwendet?" }
         ]

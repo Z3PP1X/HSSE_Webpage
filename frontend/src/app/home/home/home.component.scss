@@ -1,82 +1,72 @@
 @use '../../../variables' as *;
-.hero-container {
-    position: relative;
+
+mat-sidenav-container{
+
+
+
+  mat-sidenav {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 600px;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: transparent;
-
-    .background-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-    }
-
-    app-header {
-        width: 100%;
-        position: relative;
-        z-index: 1;
-    }
-
-    app-search-component {
-        margin-top: 20px;
-        z-index: 2;
-    }
-}
-
-.custom-sidenav {
-    display: flex;
-    flex-direction: column;
-    width: 25%;
+    width: clamp(100px, 200px, 300px);
     background-color: white;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); // Schatten rechts
+    .sidenav-wrapper{
 
-    // Leerer Raum links
-    padding-left: 250px;
-
-    .close-button {
-      font-size: 24px;
-      background: none;
-      border: none;
-      padding: 16px 16px 16px 0; // Abstand zur linken Seite entfernen
-      text-align: left;
-      font-weight: bold;
-    }
-
-    .sidenav-menu {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-
-      li {
-        margin-bottom: 20px; // Abstand zwischen den Links
+      button[mat-icon-button]{
+        background-color: transparent;
+        color: black;
+        border: none;
+        cursor: pointer;
       }
 
-      a {
-        font-family: Arial, sans-serif;
-        font-size: 24px;
-        color: black; // Standardfarbe der Links
+      button:hover{
+        transform: scale(1.1);
+
+      }
+
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-left: 3em;
+    }
+
+    li {
+      margin: 0 2em;
+
+      padding-top: 1em;
+
+      a{
         text-decoration: none;
-        padding-left: 20px;
-        display: block;
+        color: black;
+        font-weight: bold;
+        font-size:  1.2rem;
+      }
 
-        &:hover {
-          color: $sixt-primary; // Hover-Farbe
-        }
-
-        &:nth-child(2) {
-          color: $sixt-primary; // Zweiter Link ("Share") ist standardmäßig orange
-          font-weight: bold;
-        }
+      a:hover{
+        color: $sixt-primary;
       }
     }
   }
 
+  mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+
+    .content-wrapper{
+      display: flex;
+      flex-direction: column;
+      background-image: url("../../../../public/porsche2.jpg");
+      width: 100%;
+      background-size: cover;
+      min-height: 400px;
+
+      app-search-component{
+        align-self: center;
+        justify-self: center;
+      }
+    }
+
+  }
+
+}

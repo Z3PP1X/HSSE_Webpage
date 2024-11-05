@@ -2,30 +2,41 @@
 
 mat-card {
 
-    border-radius: 5px;
-    width: 840px;
-    height: 180px;
-    justify-content: center;
-    align-items: center;
+  margin-top: 50px;
+  height: 150px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
 
     mat-card-content {
 
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+
         button {
-            margin-left: 5px;
+            position: relative;
+            top: -10px;
+            margin-right: 25px;
             height: 50px;
             width: 150px;
             background-color: $sixt-primary;
             padding: $button-padding;
             border-radius: $button-border-radius;
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease-in-out;
         }
 
+        button:hover{
 
-        .mat-form-field-focused {
+          transform: scale(1.05);
 
-            color: $sixt-primary;
         }
-
-
-
-    }
+}
 }
