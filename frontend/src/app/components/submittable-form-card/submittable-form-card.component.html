@@ -1,31 +1,37 @@
 <body>
   <mat-card>
-    <mat-card-header>
-      <div class="header-container">
-        <mat-card-title>Erstmeldung eines Arbeitsbezogenen Unfalls</mat-card-title>
-        <img mat-card-image src="/assets/SIXT_Logo_Pos_RGB.svg">
-      </div>
+
+      @for (form of configurationItem(); track form.id) {
+
+        <mat-card-header>
+          <div class="header-container">
+            <mat-card-title>{{form.title}}</mat-card-title>
+            <img mat-card-image src="/assets/SIXT_Logo_Pos_RGB.svg">
+          </div>
 
 
-    </mat-card-header>
-    <mat-card-content>
-      <div class="category">
-        @for (category of dataModel(); track category.id ) {
-        <label>{{ category.cat }}</label>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="category">
+            @for (formcategory of form.category; track formcategory.id ) {
+            <label>{{ formcategory.name }}</label>
 
-        @for (question of category.questions; track question.sys_id) {
+            @for (question of formcategory.questions; track question) {
 
 
-            <div class="entryarea">
-              <input type="text" required>
-              <div class="labelline">
-                <p>{{question.text}}</p>
-              </div>
-            </div>
+                <div class="entryarea">
+                  <input type="text" required>
+                  <div class="labelline">
+                    <p>{{question.label}}</p>
+                  </div>
+                </div>
 
-        } }
-      </div>
-    </mat-card-content>
+            } }
+          </div>
+        </mat-card-content>
+
+      }
+
 
     <mat-card-actions
       ><button mat-flat-button>Submit</button></mat-card-actions

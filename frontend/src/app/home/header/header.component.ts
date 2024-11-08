@@ -28,6 +28,8 @@ export class HeaderComponent {
 
   toggleSidenav = output<boolean>();
 
+  public IncidentRecord = "/ehs";
+
   ontoggleSidenav() {
     this.toggleSidenav.emit(true);
     console.log("Sidebar event triggered")
