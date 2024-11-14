@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -7,16 +7,19 @@ import { DynamicFormQuestionComponent } from '../dynamic-form-question/dynamic-f
 import { QuestionBase } from '../question-base';
 import { QuestionControlService } from '../question-control.service';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
   providers: [QuestionControlService],
-  imports: [CommonModule, DynamicFormQuestionComponent, ReactiveFormsModule],
+  imports: [CommonModule, DynamicFormQuestionComponent, ReactiveFormsModule, MatCardModule, MatButtonModule],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss'
 })
 export class DynamicFormComponent implements OnInit{
-
+  formTitle = input.required<string>();
   @Input() questions: QuestionBase<string>[] | null = [];
   form!: FormGroup;
   payLoad = ''

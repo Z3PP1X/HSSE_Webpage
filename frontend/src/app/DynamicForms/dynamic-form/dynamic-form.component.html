@@ -1,17 +1,28 @@
-<div>
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
-    @for (question of questions; track question) {
-      <div class="form-row">
-        <app-dynamic-form-question [question]="question" [form]="form"></app-dynamic-form-question>
-      </div>
-    }
-    <div class="form-row">
-      <button type="submit" [disabled]="!form.valid">Save</button>
-    </div>
-  </form>
-  @if (payLoad) {
-    <div class="form-row">
-      <strong>Saved the following values</strong><br>{{ payLoad }}
-    </div>
-  }
-</div>
+<body>
+  <mat-card>
+        <mat-card-header>
+          <div class="header-container">
+            <mat-card-title>{{this.formTitle()}}</mat-card-title>
+            <img mat-card-image src="/assets/SIXT_Logo_Pos_RGB.svg">
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <form (ngSubmit)="onSubmit()" [formGroup]="form">
+            @for (question of questions; track question) {
+              <div class="form-row">
+                <app-dynamic-form-question [question]="question" [form]="form"></app-dynamic-form-question>
+              </div>
+            }
+          </form>
+
+        </mat-card-content>
+    <mat-card-actions
+      ><button mat-flat-button type="submit" [disabled]="!form.valid">Submit</button>
+      @if (payLoad) {
+        <div class="form-row">
+          <strong>Saved the following values</strong><br>{{ payLoad }}
+        </div>
+      }
+      </mat-card-actions>
+  </mat-card>
+</body>

@@ -3,37 +3,65 @@ import { DropdownQuestion } from './questions/question-dropdown';
 import {QuestionBase} from './question-base';
 import { TextboxQuestion } from './questions/questions-textbox';
 import {of} from 'rxjs';
+import { TESTQUESTIONS } from './TEST-Questions';
+import { LocationQuestion } from './questions/question-location';
+import { DateTimeQuestion } from './questions/question-datetime';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class QuestionService {
   // TODO: get from a remote source of question metadata
   getQuestions() {
-    const questions: QuestionBase<string>[] = [
-      new DropdownQuestion({
-        key: 'favoriteAnimal',
-        label: 'Favorite Animal',
-        options: [
-          {key: 'cat', value: 'Cat'},
-          {key: 'dog', value: 'Dog'},
-          {key: 'horse', value: 'Horse'},
-          {key: 'capybara', value: 'Capybara'},
-        ],
-        order: 3,
-      }),
-      new TextboxQuestion({
-        key: 'firstName',
-        label: 'First name',
-        value: 'Alex',
-        required: true,
-        order: 1,
-      }),
-      new TextboxQuestion({
-        key: 'emailAddress',
-        label: 'Email',
-        type: 'email',
-        order: 2,
-      }),
-    ];
+    const imp = TESTQUESTIONS;
+    const questions: QuestionBase<string>[] = []
+
+
+
+    for (let index = 0; index < imp.length; index++) {
+
+      const element = imp[index];
+
+      switch (element.controlType) {
+        case "textbox":
+           const textboxquestion = new TextboxQuestion({
+            key: element.key,
+            label: element.label,
+            type: element.type,
+            order: element.order
+          })
+          questions.push(textboxquestion);
+          break;
+        case "location":
+          const locationquestion = new LocationQuestion({
+            key: element.key,
+            label: element.label,
+            type: element.type,
+            order: element.order
+          })
+          questions.push(locationquestion)
+          break;
+        case "datetime":
+          const datetimequestion = new DateTimeQuestion({
+            key: element.key,
+            label: element.label,
+            type: element.type,
+            order: element.order
+          })
+          questions.push(datetimequestion)
+          break;
+        case "dropdown":
+          const dropdownquestion = new DropdownQuestion({
+            key: element.key,
+            label: element.label,
+            type: element.type,
+            options: element.options
+          })
+          questions.push(dropdownquestion)
+          break;
+      }
+
+    };
     return of(questions.sort((a, b) => a.order - b.order));
   }
 }
