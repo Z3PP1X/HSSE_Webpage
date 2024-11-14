@@ -1,36 +1,16 @@
 <body>
   <mat-card>
-
-      @for (form of configurationItem(); track form.id) {
-
         <mat-card-header>
           <div class="header-container">
-            <mat-card-title>{{form.title}}</mat-card-title>
+            <mat-card-title>{{this.formTitle()}}</mat-card-title>
             <img mat-card-image src="/assets/SIXT_Logo_Pos_RGB.svg">
           </div>
-
-
         </mat-card-header>
         <mat-card-content>
-          <div class="category">
-            @for (formcategory of form.category; track formcategory.id ) {
-            <label>{{ formcategory.name }}</label>
-
-            @for (question of formcategory.questions; track question) {
-
-
-                <div class="entryarea">
-                  <input type="text" required>
-                  <div class="labelline">
-                    <p>{{question.label}}</p>
-                  </div>
-                </div>
-
-            } }
-          </div>
+          <form [formGroup]="form"></form>
         </mat-card-content>
 
-      }
+
 
 
     <mat-card-actions

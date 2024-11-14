@@ -1,0 +1,15 @@
+<div [formGroup]="form">
+  <label [attr.for]="question.key">{{ question.label }}</label>
+
+  <div>
+    @switch (question.controlType) {
+      @case ('textbox') {}
+      @case ('dropdown') {}
+      @case ('location') {}
+      @case ('datetime') {}
+    }
+  </div>
+  @if (!isValid) {
+    <div class="errorMessage">{{question.label}} is required</div>
+  }
+</div>

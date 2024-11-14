@@ -1,1 +1,131 @@
-<app-submittable-form-card [configurationItem]="configurationItem"></app-submittable-form-card>
+<app-submittable-form-card [configurationItem]="configurationItem" [formTitle]="this.formTitle">
+
+  <form [formGroup]="FirstAidRecord">
+    <div class="category">
+
+      <div class="entryarea">
+        <input type="text" formControlName="RequestedFor">
+        <div class="labelline">
+          <label for="RequestedFor">Who had the incident?</label>
+        </div>
+      </div>
+
+      <div class="datetime">
+
+        <div class="entryarea">
+          <input type="text" formControlName="RequestedFor">
+          <div class="labelline">
+            <label for="RequestedFor">Date of the Incident</label>
+          </div>
+        </div>
+
+        <div class="entryarea">
+          <input type="datetime" formControlName="IncidentDateTime">
+          <div class="labelline">
+            <label for="IncidentDateTime">Time of Incident</label>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+      <div class="entryarea">
+        <input type="datetime" formControlName="IncidentDateTime">
+        <div class="labelline">
+          <label for="IncidentDateTime">When did the incident occur</label>
+        </div>
+      </div>
+
+
+
+      <div class="entryarea">
+        <input type="text" formControlName="InjuryOccurence">
+        <div class="labelline">
+          <label for="InjuryOccurence">Did the incident result in an injury? // select</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="category" [formGroup]="FirstAidRecord.controls.IncidentLocations">
+      <div class="entryarea">
+        <select formControlName="TypeOfIncident">
+          @for (option of TypeOfIncident; track option) {
+            <option value="{{option.value}}">{{option.viewValue}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="address-group">
+
+        <div class="entryarea">
+        <input type="text" formControlName="Street">
+        <div class="labelline">
+          <label for="Street">Street</label>
+        </div>
+      </div>
+      <div class="entryarea">
+        <input type="text" formControlName="Number" class="number">
+        <div class="labelline">
+          <label for="Number">Nr.</label>
+        </div>
+      </div>
+
+      <div class="entryarea">
+        <input type="text" formControlName="City">
+        <div class="labelline">
+          <label for="City">City</label>
+        </div>
+      </div>
+
+      <div class="entryarea">
+        <input type="text" formControlName="ZipCode">
+        <div class="labelline">
+          <label for="ZipCode">ZIP</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="category">
+
+      <div class="entryarea">
+        <input type="text" formControlName="RequestedFor">
+        <div class="labelline">
+          <label for="RequestedFor">Accident Cause // select</label>
+        </div>
+      </div>
+
+
+      <div class="entryarea-multiline">
+        <input type="text" formControlName="RequestedFor">
+        <div class="labelline-multiline">
+          <label for="RequestedFor">accident description // multi text</label>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+  </form>
+
+
+
+
+
+
+
+
+
+
+</app-submittable-form-card>
+
+
+
