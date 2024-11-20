@@ -7,7 +7,7 @@ import { FirstAidRecordComponent } from '../FormFirstAidRecord/first-aid-record/
   standalone: true,
   imports: [FirstAidRecordComponent],
   templateUrl: './ehs.component.html',
-  styleUrl: './ehs.component.scss'
+  styleUrl: './ehs.component.css'
 })
 export class EhsComponent {
 

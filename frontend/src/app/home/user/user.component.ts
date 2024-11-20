@@ -10,7 +10,7 @@ const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
   standalone: true,
   imports: [MatButtonModule, MatIconModule],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
+  styleUrl: './user.component.css'
 })
 export class UserComponent {
 
@@ -22,6 +22,6 @@ export class UserComponent {
     this.loggedInUser.set(DUMMY_USERS[randomIndex]);
   }
 
-  
+
 
 }

@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   providers: [QuestionControlService],
   imports: [CommonModule, DynamicFormQuestionComponent, ReactiveFormsModule, MatCardModule, MatButtonModule],
   templateUrl: './dynamic-form.component.html',
-  styleUrl: './dynamic-form.component.scss'
+  styleUrl: './dynamic-form.component.css'
 })
 export class DynamicFormComponent implements OnInit{
   formTitle = input.required<string>();

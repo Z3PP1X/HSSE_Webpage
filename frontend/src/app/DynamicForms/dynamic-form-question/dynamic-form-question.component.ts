@@ -25,7 +25,7 @@ import { QuestionBase } from '../question-base';
 
   providers: [MatDatepickerModule],
   templateUrl: './dynamic-form-question.component.html',
-  styleUrl: './dynamic-form-question.component.scss'
+  styleUrl: './dynamic-form-question.component.css'
 })
 export class DynamicFormQuestionComponent {
 
@@ -35,5 +35,7 @@ export class DynamicFormQuestionComponent {
   get isValid() {
     return this.form.controls[this.question.key].valid;
   }
+
+
 
 }

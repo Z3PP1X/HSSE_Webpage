@@ -19,14 +19,14 @@ import { CallToActionBannerComponent } from './components/call-to-action-banner/
     CallToActionBannerComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'frontend';
 
   appSidebar = false;
 
-  ehsContent = EHS_BANNER_CONTENT; 
+  ehsContent = EHS_BANNER_CONTENT;
 
-  
+
 }

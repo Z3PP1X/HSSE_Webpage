@@ -1,29 +1,22 @@
-<div class="question-wrapper" [formGroup]="form">
+<div [formGroup]="form">
 
     @switch (question.controlType) {
       @case ('textbox') {
-        <div class="entryarea">
-          <input [formControlName]="question.key" [id]="question.key" [type]="question.type">
-          <div class="labelline" [attr.for]="question.key">{{ question.label }}</div>
-        </div>
+          <input  formControlName="{{question.key}}" [id]="question.key" [type]="question.type" required="{{question.required}}" placeholder="{{question.key}}">
 
       }
       @case ('dropdown') {
-        <mat-select [formControlName]="question.key" [id]="question.key">
-          @for (option of question.options; track option) {
-            <mat-option [value]="option.value">{{option.key}}</mat-option>
-          }
-        </mat-select>
+
+
+
+
       }
       @case ('location') {
         <google-map [formControlName]="question.key" [id]="question.key"width="100%" height="400px"></google-map>
 
       }
       @case ('datetime') {
-        <input matInput [matDatepicker]="picker" [formControlName]="question.key" [id]="question.key">
-        <ng-container><mat-hint>MM/DD/YYYY</mat-hint></ng-container>
-        <ng-container><mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle></ng-container>
-        <mat-datepicker touchUi #picker></mat-datepicker>
+
       }
     }
 

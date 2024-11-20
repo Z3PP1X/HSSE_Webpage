@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   imports: [AsyncPipe, DynamicFormComponent],
   providers: [QuestionService],
   templateUrl: './first-aid-record.component.html',
-  styleUrl: './first-aid-record.component.scss'
+  styleUrl: './first-aid-record.component.css'
 })
 export class FirstAidRecordComponent {
 
