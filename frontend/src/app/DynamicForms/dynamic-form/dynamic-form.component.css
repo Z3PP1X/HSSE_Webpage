@@ -1,5 +1,6 @@
 
 
+
 *{
   margin: 0;
   padding: 0;
@@ -14,12 +15,16 @@ mat-card {
     width: 650px;
     padding-bottom: 25px;}
 
+    mat-card-header{
+      display: flex;
+    }
       .header-container{
         display: flex;
         flex-direction: row;
         align-items: center;
         width: 100%;
         padding-left: 15px;
+        padding-bottom: 25px;}
         padding-bottom: 25px;}
 
         mat-card-title{
@@ -35,9 +40,12 @@ mat-card {
 
 
 
+
+
       form{
         width: 100%;
       }
+
 
 
     mat-card-actions{
@@ -45,12 +53,15 @@ mat-card {
       display: flex;
       align-items: center;
       justify-content: center;}
+      justify-content: center;}
 
       button[mat-flat-button]{
+        background-color: olivedrab;
         background-color: olivedrab;
         height: 42px;
         color: white;
         width: 90%;
+        border-radius: 8px;
         border-radius: 8px;
         padding-bottom: 20px;
         padding-top: 20px;
@@ -61,6 +72,9 @@ mat-card {
       button[mat-flat-button]:hover{
         transform: scale(1.05);
       }
+
+
+
 
 
 
