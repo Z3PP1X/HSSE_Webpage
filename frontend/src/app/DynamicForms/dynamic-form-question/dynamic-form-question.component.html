@@ -1,8 +1,8 @@
-<div [formGroup]="form">
+<div class="m-4 flex-auto"[formGroup]="form">
 
     @switch (question.controlType) {
       @case ('textbox') {
-          <input  formControlName="{{question.key}}" [id]="question.key" [type]="question.type" required="{{question.required}}" placeholder="{{question.key}}">
+          <input class="w-full leading-10 border border-black rounded-lg px-4 focus:outline-none focus:border-green-500 placeholder-gray-500" formControlName="{{question.key}}" [id]="question.key" [type]="question.type" required="{{question.required}}" placeholder="{{question.key}}">
 
       }
       @case ('dropdown') {
