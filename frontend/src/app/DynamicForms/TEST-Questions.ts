@@ -24,7 +24,7 @@ export const TESTQUESTIONS = [
     "label": "Date of Birth",
     "value": "",
     "required": false,
-    "controlType": "textbox",
+    "controlType": "dropdown",
     "type": "date",
     "order": 3,
     "options": []
@@ -34,7 +34,7 @@ export const TESTQUESTIONS = [
     "label": "Gender",
     "value": "male",
     "required": false,
-    "controlType": "textbox",
+    "controlType": "dropdown",
     "type": "",
     "order": 4,
     "options": [

@@ -1,0 +1,58 @@
+mat-sidenav {
+  display: flex;
+  flex-direction: column;
+  width: clamp(100px, 200px, 300px);
+  background-color: white;
+}
+
+button[mat-icon-button] {
+  background-color: transparent;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin-left: 3em;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+a:hover {
+  color: green;
+}
+
+li {
+  margin: 0 2em;
+
+  padding-top: 1em;
+}
+
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+}
+
+app-search-component {
+  align-self: center;
+  justify-self: center;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../../../public/porsche2.jpg");
+  width: 100%;
+  background-size: cover;
+  min-height: 400px;
+}
