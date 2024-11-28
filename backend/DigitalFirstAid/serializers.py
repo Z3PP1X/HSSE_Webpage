@@ -43,7 +43,6 @@ class FirstAidRecordMetadataSerializer(serializers.BaseSerializer):
                 if meta_name in meta_whitelist:
                     return_meta[meta_name] = field_meta[meta_name]
                     return_meta['field_type'] = field.get_internal_type()
-                    return_meta['key'] = field_name
 
                 if field.choices:
                     return_meta['choices'] = [
