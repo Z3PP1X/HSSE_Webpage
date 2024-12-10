@@ -1,5 +1,5 @@
 
-import { Component,  inject,  OnInit, } from '@angular/core';
+import { Component,  inject,  OnInit, ChangeDetectorRef} from '@angular/core';
 
 import { AsyncPipe } from '@angular/common';
 
@@ -10,6 +10,7 @@ import { QuestionBase } from '../../../DynamicForms/question-base';
 import { Observable, of, Subscription} from 'rxjs';
 
 import { MetadataService } from '../../../DynamicForms/services/model.metadata.service';
+import { FormGroup } from '@angular/forms';
 
 
 
@@ -28,13 +29,15 @@ export class FirstAidRecordComponent implements OnInit {
   private questionservice = inject(QuestionService);
   private dataset = inject(MetadataService);
   private subscription!: Subscription;
+  private cdRef = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
 
-
       this.subscription = this.dataset.getMetadata("http://127.0.0.1:8000/api/digitalfirstaid/meta/?format=json").subscribe({
         next: (data) => {
-            this.questions$ = this.questionservice.getQuestions(data)
+            this.questions$ = this.questionservice.getQuestions(data);
+            this.cdRef.detectChanges();
+            return this.questions$
         }
       });
   }

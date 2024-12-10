@@ -15,7 +15,7 @@ import { TESTQUESTIONS } from './TEST-Questions';
 export class QuestionService {
   // TODO: get from a remote source of question metadata
   getQuestions(data: any) {
-    const imp = TESTQUESTIONS;
+    const imp = data;
 
 
     const questions: QuestionBase<string>[] = []

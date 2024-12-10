@@ -2,13 +2,10 @@
 
     @switch (question.controlType) {
       @case ('textbox') {
-          <input class="w-full leading-10 border border-black rounded-lg px-4 focus:outline-none focus:border-green-500 placeholder-gray-500" formControlName="{{question.key}}" [id]="question.key" placeholder="{{question.key}}">
+          <input class="w-full leading-10 border border-black rounded-lg px-4 focus:outline-none focus:border-green-500 placeholder-gray-500" [formControlName]="question.key" [id]="question.key" placeholder="{{question.label}}">
 
       }
       @case ('dropdown') {
-
-
-
 
       }
       @case ('location') {
@@ -16,6 +13,8 @@
 
       }
       @case ('datetime') {
+
+        <input class="w-full leading-10 border border-black rounded-lg px-4 focus:outline-none focus:border-green-500 placeholder-gray-500" [formControlName]="question.key" [id]="question.key" placeholder="{{question.label}}" type="{{question.type}}">
 
       }
     }

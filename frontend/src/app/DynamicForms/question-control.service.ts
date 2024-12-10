@@ -9,10 +9,16 @@ export class QuestionControlService {
     const group: any = {};
 
     questions.forEach((question) => {
-      group[question.key] = question.required
-      ? new FormControl(question.key || '', Validators.required)
-      : new FormControl(question.key || '');
+      if (question.key) {
+        group[question.key] = question.required
+          ? new FormControl(question.key || '', Validators.required)
+          : new FormControl(question.key || '');
+      } else {
+        console.error('Missing key for question:', question);  
+      }
     });
+    console.log('Form Group:', group);
+
     return new FormGroup(group);
   }
 }
