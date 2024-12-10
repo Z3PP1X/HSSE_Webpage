@@ -32,10 +32,13 @@ export class DynamicFormQuestionComponent {
   @Input() question!: QuestionBase<string>;
   @Input() form!: FormGroup;
 
+
   get isValid() {
-    return this.form.controls[this.question.key].valid;
+    return true;
   }
 
 
-
 }
+
+
+// this.form.controls[this.question.key].valid

@@ -1,22 +1,24 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import { DropdownQuestion } from './questions/question-dropdown';
 import {QuestionBase} from './question-base';
 import { TextboxQuestion } from './questions/questions-textbox';
 import {of} from 'rxjs';
-import { TESTQUESTIONS } from './TEST-Questions';
 import { LocationQuestion } from './questions/question-location';
 import { DateTimeQuestion } from './questions/question-datetime';
+import { MetadataService } from './services/model.metadata.service';
+import { QuestionMetadata } from './interfaces/question-metadata.interface';
+import { TESTQUESTIONS } from './TEST-Questions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
   // TODO: get from a remote source of question metadata
-  getQuestions() {
+  getQuestions(data: any) {
     const imp = TESTQUESTIONS;
+
+
     const questions: QuestionBase<string>[] = []
-
-
 
     for (let index = 0; index < imp.length; index++) {
 

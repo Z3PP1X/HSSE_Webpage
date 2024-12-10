@@ -38,9 +38,9 @@ export const TESTQUESTIONS = [
     "type": "",
     "order": 4,
     "options": [
-      { "key": "male", "value": "Male" },
-      { "key": "female", "value": "Female" },
-      { "key": "other", "value": "Other" }
+      { "key": "male", "value": 1 },
+      { "key": "female", "value": 2 },
+      { "key": "other", "value": 3 }
     ]
   },
   {
@@ -52,9 +52,9 @@ export const TESTQUESTIONS = [
     "type": "",
     "order": 5,
     "options": [
-      { "key": "de", "value": "Germany" },
-      { "key": "us", "value": "USA" },
-      { "key": "uk", "value": "UK" }
+      { "key": "de", "value": 1 },
+      { "key": "us", "value": 2 },
+      { "key": "uk", "value": 3 }
     ]
   },
   {
@@ -96,11 +96,11 @@ export const TESTQUESTIONS = [
     "type": "",
     "order": 9,
     "options": [
-      { "key": "1", "value": "1" },
-      { "key": "2", "value": "2" },
-      { "key": "3", "value": "3" },
-      { "key": "4", "value": "4" },
-      { "key": "5", "value": "5" }
+      { "key": "1", "value": 1 },
+      { "key": "2", "value": 2 },
+      { "key": "3", "value": 3 },
+      { "key": "4", "value": 4 },
+      { "key": "5", "value": 5 }
     ]
   },
   {
