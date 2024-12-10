@@ -1,5 +1,5 @@
 
-import { Component,  inject,  OnInit, } from '@angular/core';
+import { Component,  inject,  OnInit, ChangeDetectorRef} from '@angular/core';
 
 import { AsyncPipe, CommonModule } from '@angular/common';
 
@@ -30,6 +30,7 @@ export class FirstAidRecordComponent implements OnInit {
   private questionservice = inject(QuestionService);
   private dataset = inject(MetadataService);
   private subscription!: Subscription;
+  private cdRef = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
 
