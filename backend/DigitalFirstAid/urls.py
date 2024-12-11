@@ -16,6 +16,6 @@ app_name = 'digitalfirstaid'
 
 urlpatterns = [
     path('', include(router.urls)),
-
+    path('meta/', views.FirstAidRecordMeta.as_view(), name='Meta'),
 
 ]

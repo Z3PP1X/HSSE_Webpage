@@ -31,4 +31,5 @@ urlpatterns = [
          ),
     path("api/user/", include("User.urls")),
     path('api/digitalfirstaid/', include('DigitalFirstAid.urls')),
+
 ]

@@ -22,11 +22,13 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   ],
   providers: [],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent {
 
   toggleSidenav = output<boolean>();
+
+  public IncidentRecord = "/ehs";
 
   ontoggleSidenav() {
     this.toggleSidenav.emit(true);

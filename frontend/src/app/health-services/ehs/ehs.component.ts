@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { DUMMY_QUESTIONS } from '../../../dummy-questions';
-import { DUMMY_QUESTIONS_ALT } from '../../../dummy-questions2';
-import { SubmittableFormCardComponent } from '../../components/submittable-form-card/submittable-form-card.component';
+
+import { FirstAidRecordComponent } from '../FormFirstAidRecord/first-aid-record/first-aid-record.component';
 
 @Component({
   selector: 'app-ehs',
   standalone: true,
-  imports: [SubmittableFormCardComponent],
+  imports: [FirstAidRecordComponent],
   templateUrl: './ehs.component.html',
-  styleUrl: './ehs.component.scss'
+  styleUrl: './ehs.component.css'
 })
 export class EhsComponent {
-
-  providedData = DUMMY_QUESTIONS
 
 }
