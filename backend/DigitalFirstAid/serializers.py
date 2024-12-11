@@ -52,5 +52,4 @@ class FirstAidRecordMetadataSerializer(serializers.BaseSerializer):
 
             return_data[field_name] = return_meta
 
-
         return return_data
