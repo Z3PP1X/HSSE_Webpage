@@ -24,8 +24,9 @@ mat-card {
         align-items: center;
         width: 100%;
         padding-left: 15px;
-        padding-bottom: 25px;}
-        padding-bottom: 25px;}
+        padding-bottom: 25px;
+      }
+
 
         mat-card-title{
           font-size: clamp(0.8em, 1.3vw + 0.5em, 2em);
@@ -53,7 +54,7 @@ mat-card {
       display: flex;
       align-items: center;
       justify-content: center;}
-      justify-content: center;}
+
 
       button[mat-flat-button]{
         background-color: olivedrab;

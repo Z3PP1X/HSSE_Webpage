@@ -38,6 +38,7 @@ class FirstAidRecordMetadataSerializer(serializers.BaseSerializer):
             field_name = field.name
             field_meta = field.__dict__
             return_meta = {}
+            return_meta['key'] = field.name
 
             for meta_name in field_meta:
                 if meta_name in meta_whitelist:
@@ -50,5 +51,6 @@ class FirstAidRecordMetadataSerializer(serializers.BaseSerializer):
                         for choice in field.choices]
 
             return_data[field_name] = return_meta
+
 
         return return_data

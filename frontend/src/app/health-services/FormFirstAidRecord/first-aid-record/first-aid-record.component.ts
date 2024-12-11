@@ -36,6 +36,7 @@ export class FirstAidRecordComponent implements OnInit {
       this.subscription = this.dataset.getMetadata("http://127.0.0.1:8000/api/digitalfirstaid/meta/?format=json").subscribe({
         next: (data) => {
             this.questions$ = this.questionservice.getQuestions(data);
+            console.log(data)
               }
             });
         }
