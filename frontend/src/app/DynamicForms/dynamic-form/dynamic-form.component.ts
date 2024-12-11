@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -9,6 +9,9 @@ import { QuestionControlService } from '../question-control.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Observable, of, Subscription} from 'rxjs';
+
+
 
 @Component({
   selector: 'app-dynamic-form',
@@ -19,16 +22,18 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './dynamic-form.component.css'
 })
 export class DynamicFormComponent implements OnInit{
+
   formTitle = input.required<string>();
   @Input() questions: QuestionBase<string>[] | null = [];
   form!: FormGroup;
-  payLoad = ''
+  payLoad = '';
 
   constructor(private qcs: QuestionControlService) {}
 
   ngOnInit(): void {
-      this.form = this.qcs.toFormGroup(this.questions as QuestionBase<string>[]);
-  }
+
+        this.form = this.qcs.toFormGroup(this.questions as QuestionBase<string>[]);
+      }
 
   onSubmit() {
     this.payLoad = JSON.stringify(this.form.getRawValue());

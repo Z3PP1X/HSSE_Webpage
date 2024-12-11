@@ -17,24 +17,22 @@ export class MetadataService{
   questionset = inject(MetadataTransformationService)
 
   private fetchMetadata(url: string){
-   return this.http.get<APIMetadata[]>(url).pipe(
-
-    tap(data => console.log('Received data: ', data))
-
-   );
-
+   return this.http.get<APIMetadata[]>(url).pipe();
 
   }
 
-  getMetadata(url: string){
-      return this.fetchMetadata(url).pipe(
+  getMetadata(url: string) {
+    return this.fetchMetadata(url).pipe(
+      map((resData) => this.questionset.convertMetadatatoQuestionModel(resData))
 
-        map((resData) => {
-          return this.questionset.convertMetadatatoQuestionModel(resData);
-        })
+    );
+  }
 
-      )
+
+
+
+
         }
-}
+
 
 

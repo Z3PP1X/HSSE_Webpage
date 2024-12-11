@@ -1,1 +1,9 @@
-<app-dynamic-form [questions]="questions$ | async" [formTitle]="formTitle"></app-dynamic-form>
+<ng-container *ngIf="questions$ | async as data">
+  @if (data.length > 0) {
+    <app-dynamic-form [questions]="data" [formTitle]="formTitle"></app-dynamic-form>
+  }
+</ng-container>
+
+
+
+

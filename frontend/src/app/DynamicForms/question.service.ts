@@ -3,6 +3,7 @@ import { DropdownQuestion } from './questions/question-dropdown';
 import {QuestionBase} from './question-base';
 import { TextboxQuestion } from './questions/questions-textbox';
 import {of} from 'rxjs';
+import { map, tap} from 'rxjs/operators';
 import { LocationQuestion } from './questions/question-location';
 import { DateTimeQuestion } from './questions/question-datetime';
 import { MetadataService } from './services/model.metadata.service';
@@ -13,16 +14,13 @@ import { TESTQUESTIONS } from './TEST-Questions';
   providedIn: 'root'
 })
 export class QuestionService {
-  // TODO: get from a remote source of question metadata
+
   getQuestions(data: any) {
-    const imp = data;
-
-
     const questions: QuestionBase<string>[] = []
 
-    for (let index = 0; index < imp.length; index++) {
+    for (let index = 0; index < data.length; index++) {
 
-      const element = imp[index];
+      const element = data[index];
 
       switch (element.controlType) {
         case "textbox":
