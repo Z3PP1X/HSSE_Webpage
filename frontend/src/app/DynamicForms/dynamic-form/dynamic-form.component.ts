@@ -31,7 +31,6 @@ export class DynamicFormComponent implements OnInit{
   constructor(private qcs: QuestionControlService) {}
 
   ngOnInit(): void {
-
         this.form = this.qcs.toFormGroup(this.questions as QuestionBase<string>[]);
       }
 

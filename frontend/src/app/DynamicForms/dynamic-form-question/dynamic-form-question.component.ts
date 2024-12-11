@@ -34,11 +34,11 @@ export class DynamicFormQuestionComponent {
 
 
   get isValid() {
-    return true;
+    return this.form.controls[this.question.key].valid;
   }
 
 
 }
 
 
-// this.form.controls[this.question.key].valid
+//
