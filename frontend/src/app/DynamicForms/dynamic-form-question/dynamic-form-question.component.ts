@@ -37,9 +37,6 @@ export class DynamicFormQuestionComponent {
     return this.form.controls[this.question.key].valid;
   }
 
-
-
-
 }
 
 
