@@ -4,7 +4,7 @@ from Core.abstractModels import tableModel
 class BranchNetwork(tableModel):
     """Branch Network Model"""
 
-    CostCenter = models.IntegerField(max_length=5)
+    CostCenter = models.CharField(max_length=5, unique=True)
     Active = models.BooleanField(default=True)
     BranchName = models.CharField()
 
@@ -23,3 +23,8 @@ class BranchNetwork(tableModel):
     ### Branch Type
 
     BranchMainType = models.CharField()
+
+    ### Safety Aspects
+
+    AssemblyPoint = models.CharField(null=True)
+    PoisonEmergencyCallNumber = models.CharField(null=True)
