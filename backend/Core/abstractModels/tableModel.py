@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 class Table(models.Model):
 
-    sys_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    sys_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     created_by = models.ForeignKey(
         get_user_model(),
         related_name='created_%(class)s_set',
