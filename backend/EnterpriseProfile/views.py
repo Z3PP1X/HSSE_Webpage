@@ -33,11 +33,11 @@ class BranchRecordViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(
             Active=True
         )
-    
+
     def update(self, request, *args, **kwargs):
         """Handles PUT requests without using the serializer"""
 
-        try: 
+        try:
             data = json.loads(request.body)
 
             thread = threading.Thread(
@@ -48,12 +48,6 @@ class BranchRecordViewSet(viewsets.ModelViewSet):
             thread.start()
 
             return Response({}, status=status.HTTP_202_ACCEPTED)
-        except Exception as e: 
-            return Response({'status': 'error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-
+        except Exception as e:
+            return Response({'status': 'error', 'message': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
