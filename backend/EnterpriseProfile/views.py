@@ -2,12 +2,20 @@
 Views for the Branch Network APIs.
 """
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 from .branchNetwork.BranchNetwork import BranchNetwork
+from Core.management.commands import import_branches
+
+from . import serializers
+
+import json
+
+import threading
 
 
 class BranchRecordViewSet(viewsets.ModelViewSet):
@@ -15,6 +23,7 @@ class BranchRecordViewSet(viewsets.ModelViewSet):
     Endpoint for CRUD operations on the DFA Model.
     """
 
+    serializer_class = serializers.BranchUpdateSerializer
     queryset = BranchNetwork.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -24,4 +33,27 @@ class BranchRecordViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(
             Active=True
         )
+    
+    def update(self, request, *args, **kwargs):
+        """Handles PUT requests without using the serializer"""
+
+        try: 
+            data = json.loads(request.body)
+
+            thread = threading.Thread(
+                target=import_branches,
+                args=('process_payload',),
+                kwargs={'payload': json.dumps(data)}
+            )
+            thread.start()
+
+            return Response({}, status=status.HTTP_202_ACCEPTED)
+        except Exception as e: 
+            return Response({'status': 'error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
 

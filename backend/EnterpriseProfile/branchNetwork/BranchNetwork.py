@@ -28,5 +28,5 @@ class BranchNetwork(tableModel.Table):
 
     ### Safety Aspects
 
-    AssemblyPoint = models.CharField(null=True)
-    PoisonEmergencyCallNumber = models.CharField(null=True)
+    AssemblyPoint = models.CharField(blank=True)
+    PoisonEmergencyCallNumber = models.CharField(blank=True)

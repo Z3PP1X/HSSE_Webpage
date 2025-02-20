@@ -7,20 +7,15 @@ from django.core.management.base import BaseCommand
 from EnterpriseProfile.branchNetwork.BranchNetwork import BranchNetwork
 
 class Command(BaseCommand):
+    """Import json branch data to the model"""
 
-    help = "Import branch data from looker Export. NOTE: File has to be in JSON Format"
-
-    def add_arguments(self, parser):
-        parser.add_argument("json_file", type=str, help="Path to JSON file")
-
-    def handle(self, *args, **kwargs):
-        json_file = kwargs["json_file"]
+    def handle(self, *args, **options):
+        payload = options.get('payload')
 
         try:
-            with open(json_file, "r") as file:
-                data = json.load(file)
+            data = json.loads(payload)
 
-                for entry in data:
+            for entry in data:
                     branch, created = BranchNetwork.objects.update_or_create(
                         CostCenter=entry["Branch ID"],
                         defaults={
