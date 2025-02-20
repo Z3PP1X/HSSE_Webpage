@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'User',
     'Core',
+    'EnterpriseProfile',
     'DigitalFirstAid',
     'rest_framework',
     'rest_framework.authtoken',

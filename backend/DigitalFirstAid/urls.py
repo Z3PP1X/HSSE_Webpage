@@ -1,5 +1,5 @@
 """"
-URL Mappings for the recipe app.
+URL Mappings for the digital first aid book app.
 """
 
 from django.urls import path, include
