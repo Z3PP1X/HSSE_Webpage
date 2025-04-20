@@ -31,7 +31,7 @@ class ModelFormSchemaBuilder(FormSchemaBuilder):
                 
                 # Extract field metadata
                 self.model_fields[field_name] = {
-                    "name": field_name,
+                    "key": field_name,
                     "label": model_field.verbose_name or field_name.replace('_', ' ').title(),
                     "help_text": model_field.help_text or "",
                     "required": not model_field.blank,
