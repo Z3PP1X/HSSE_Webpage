@@ -30,7 +30,7 @@ urlpatterns = [
          name="api-docs",
          ),
     path("api/user/", include("User.urls")),
-    path('api/digitalfirstaid/', include('DigitalFirstAid.urls')),
+    path("api/alarmplan/", include("Alarmplan.urls")),
     path('api/branchnetwork/', include('EnterpriseProfile.urls'))
 
 ]

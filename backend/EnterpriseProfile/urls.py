@@ -1,4 +1,4 @@
-""""
+"""
 URL Mappings for the Branch Network app.
 """
 
@@ -13,4 +13,5 @@ app_name = 'branchnetwork'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('costcenters/', views.CostCenterListView.as_view(), name='costcenters'),
 ]
