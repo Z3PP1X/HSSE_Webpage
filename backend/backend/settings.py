@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'User',
     'Core',
     'EnterpriseProfile',
+    'Alarmplan',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
