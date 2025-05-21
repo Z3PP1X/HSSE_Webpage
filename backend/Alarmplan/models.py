@@ -1,11 +1,9 @@
 from django.db import models
 from Core.abstractModels import tableModel
 from django.contrib.auth import get_user_model
-from EnterpriseProfile.branchNetwork import BranchNetwork
+from EnterpriseProfile.branchNetwork.BranchNetwork import BranchNetwork
 from django.core.exceptions import ValidationError
 
-
-# Create your models here.
 
 class ContactType(models.IntegerChoices):
     """Contact Type Model"""
@@ -18,7 +16,8 @@ class Alarmplan(tableModel.Table):
     """Alarmplan Model"""
     Active = models.BooleanField(default=True)
     RelatedBranch = models.ForeignKey(BranchNetwork, null=True, on_delete=models.SET_NULL)
-    
+    contactPerson = models.ManyToManyField("ContactPerson")
+
 
 class ContactPerson(tableModel.Table):
     """Contact Person Model"""
@@ -33,7 +32,7 @@ class ContactPerson(tableModel.Table):
 
         if not self.ContactPersonPhoneNumber and not self.ContactPersonEmail:
             raise ValidationError("Either phone number or email must be provided.")
-        
+
         super().clean()
 
     def save(self, *args, **kwargs):
