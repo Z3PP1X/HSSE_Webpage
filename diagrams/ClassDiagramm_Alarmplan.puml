@@ -1,0 +1,63 @@
+@startuml
+
+skinparam linetype ortho
+
+rectangle "Branch_Network" {
+
+class Branch {
+
++CostCenter : CharField
++ Active : Bool
++ BranchName : CharField
++ MandantID : CharField
++ RegionID : CharField
++ RegionName : CharField
++ Country : CharField
++ Latitude : CharField
++ Longitude : CharField
++ State : CharField
++ City : CharField
++ Street : CharField
++ PostCode : CharField
++ BranchOperator : CharField
++ BranchMainType : CharField
++ AssemblyPoint : CharField
++ PoisonEmergencyCallNumber : CharField
+
+getBranch(CostCenter)
+setBranch(CostCenter)
+updateBranch(CostCenter)
+
+}
+
+}
+
+rectangle "Alarmplan" {
+
+class AlarmPlan {
+
++ Active : Bool
++ RelatedBranch : ForeignKey
++ ContactPerson : ManyToManyField
+
+
+
+}
+
+class ContactPerson {
+
++ RelatedBranch : ForeignKey
++ContactPersonName : CharField
++ContactPersonPhoneNumber : CharField
++ContactPersonEmail : EmailField
++ ContactType : IntegerField
+
+}
+
+}
+
+Branch "1" <--up--> "0 .. *" AlarmPlan
+AlarmPlan "1 .. *" <--left--> "1 .. *" ContactPerson
+Branch "1 .. *" <--up--> "0 .. *" ContactPerson
+
+@enduml

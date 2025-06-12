@@ -1,0 +1,23 @@
+@startuml
+left to right direction
+
+actor BranchManager
+actor SixtUser
+
+rectangle "HSSE_Webpage v1" {
+  (HSSE Wiki) as Wiki
+  (Generate Alarmplan) as Alarmplan
+  (Retrieve Historic Alarmplans) as History
+  (Search Alarmplan by Cost Center) as CostCenter
+
+  BranchManager -- Wiki
+  BranchManager -- Alarmplan
+  BranchManager -- History
+  BranchManager -- CostCenter
+  SixtUser -- Wiki
+
+
+  Alarmplan .> CostCenter : <<include>>
+  Alarmplan .> History : <<extend>>
+}
+@enduml
