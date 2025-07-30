@@ -1,0 +1,63 @@
+@startuml
+
+skinparam componentStyle rectangle
+skinparam linetype polyline
+skinparam nodesep 40
+skinparam ranksep 60
+skinparam packagePadding 20
+skinparam nodePadding 20
+skinparam defaultFontName Arial
+
+top to bottom direction
+
+package "Application System" {
+
+  package "Web-Container" as WebContainer {
+    node "Docker Container: Frontend" {
+      artifact "frontend.tar"
+      artifact "docker-compose-frontend.yml"
+      component "HSSE_Frontend"
+      interface "Web-API"
+
+      HSSE_Frontend --> "frontend.tar" : <<realized by>>
+      HSSE_Frontend --> "Web-API" : exposes
+    }
+  }
+
+  package "OneIdentity" as OneIdentity {
+    node "Authentication Gateway" {
+      component "Sixt-Auth" as SixtAuth
+      interface "UserAuthentication"
+
+      HSSE_Frontend --> UserAuthentication : OAuth / Token
+      SixtAuth --|> UserAuthentication
+    }
+  }
+
+  ' Hidden link to force WebContainer and OneIdentity side by side
+  WebContainer -[hidden]-> OneIdentity
+
+  package "ApplicationContainer" as AppContainer {
+    node "Docker Container: Backend" {
+      artifact "backend.jar"
+      artifact "docker-compose-backend.yml"
+      component "AlarmplanService"
+      component "DynamicFormService"
+      interface "REST-API"
+
+      AlarmplanService --> "backend.jar" : <<part of>>
+      DynamicFormService --> "backend.jar" : <<part of>>
+      AlarmplanService --> "REST-API" : <<exposes endpoints>>
+      DynamicFormService --> "REST-API" : <<exposes endpoints>>
+    }
+
+    database "PostgreSQL"
+    AlarmplanService --> "PostgreSQL" : reads/writes
+    DynamicFormService --> "PostgreSQL" : reads/writes
+  }
+
+  "Web-API" --> "REST-API" : HTTPS/JSON
+
+}
+
+@enduml

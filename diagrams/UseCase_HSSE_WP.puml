@@ -21,3 +21,5 @@ rectangle "HSSE_Webpage v1" {
   Alarmplan .> History : <<extend>>
 }
 @enduml
+
+### PlantUML Link: 
