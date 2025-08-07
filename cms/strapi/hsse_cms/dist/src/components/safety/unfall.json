@@ -1,0 +1,33 @@
+{
+    "collectionName": "components_safety_unfalls",
+    "info": {
+        "displayName": "Unfall",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "Titel": {
+            "type": "string",
+            "required": true,
+            "default": "Verhalten bei Unfällen"
+        },
+        "KatIcon": {
+            "allowedTypes": [
+                "images",
+                "files"
+            ],
+            "type": "media",
+            "multiple": true,
+            "required": true
+        },
+        "KatSubtitle": {
+            "type": "string",
+            "required": true,
+            "default": "RUHE BEWAHREN!"
+        },
+        "KatContent": {
+            "type": "blocks",
+            "required": true
+        }
+    }
+}

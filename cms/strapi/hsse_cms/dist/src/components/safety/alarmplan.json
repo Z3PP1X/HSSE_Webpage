@@ -1,0 +1,24 @@
+{
+    "collectionName": "components_safety_alarmplans",
+    "info": {
+        "displayName": "Alarmplan",
+        "icon": "archive",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "Titel": {
+            "type": "string",
+            "required": true
+        },
+        "Logo": {
+            "allowedTypes": [
+                "images",
+                "files"
+            ],
+            "type": "media",
+            "multiple": false,
+            "required": true
+        }
+    }
+}
