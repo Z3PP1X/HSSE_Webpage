@@ -83,32 +83,32 @@ class CombinedEmergencyFormSerializer(serializers.Serializer):
         """Generate form schema combining Alarmplan and ContactPerson models."""
         factory = get_form_factory('multi')
         creator = factory.create_form_creator(
-            models={
-                'alarmplan': Alarmplan,
-                'contact': ContactPerson
-            },
-            form_id="emergency_planning_form",
-            form_title="Emergency Planning Form"
+            models={'alarmplan': Alarmplan, 'contact': ContactPerson},
+            form_id="alarmplan_form",
+            form_title="Emergency Alarm Plan"
         )
         
         config = {
             'categories': [
                 {
                     'key': 'plan_setup',
-                    'title': 'Plan Setup',
+                    'title': 'Plan Configuration',
                     'fields': [
                         {'model': 'Alarmplan', 'field': 'Active'},
-                        {'model': 'Alarmplan', 'field': 'RelatedBranch'}
-                    ]
-                },
-                {
-                    'key': 'emergency_contacts',
-                    'title': 'Emergency Contacts',
-                    'fields': [
-                        {'model': 'ContactPerson', 'field': 'ContactPersonName'},
-                        {'model': 'ContactPerson', 'field': 'ContactPersonEmail'},
-                        {'model': 'ContactPerson', 'field': 'ContactPersonPhoneNumber'},
-                        {'model': 'ContactPerson', 'field': 'ContactType'}
+                        {
+                            'model': 'Alarmplan', 
+                            'field': 'RelatedBranch',
+                            'ajax': {
+                                'endpoint': '/api/branchnetwork/costcenters/',
+                                'method': 'GET',
+                                'events': ['input', 'focus'],
+                                'debounce': 300,
+                                'field_type': 'ajax_select',
+                                'search_field': 'CostCenter',
+                                'display_field': 'BranchName',
+                                'value_field': 'sys_id'
+                            }
+                        }
                     ]
                 }
             ]

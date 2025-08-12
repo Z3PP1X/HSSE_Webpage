@@ -130,8 +130,9 @@ class SingleModelFormCreator(JsonFormCreator, ModelMetadataProvider):
         self.model_fields = self._get_model_metadata()
     
     def configure_from_dict(self, config: dict):
-        """Configure the form schema from a dictionary."""
-        # Apply AJAX configs
+        """Configure the form schema from a dictionary with dynamic AJAX support."""
+        
+        # Apply global AJAX configs
         if 'ajax_configs' in config:
             for key, cfg in config['ajax_configs'].items():
                 self.add_ajax_config(
@@ -142,20 +143,51 @@ class SingleModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                     debounce=cfg.get('debounce', 300)
                 )
         
-        # Handle categories
+        # Handle categories with dynamic field configurations
         if 'categories' in config:
             for cat in config['categories']:
                 field_configs = []
                 
-                for field_name in cat.get('fields', []):
-                    if field_name in self.model_fields:
+                for field_spec in cat.get('fields', []):
+                    if isinstance(field_spec, str):
+                        # Simple field name
+                        field_name = field_spec
+                        field_info = self.model_fields[field_name].copy()
+                    elif isinstance(field_spec, dict):
+                        # Complex field configuration with potential AJAX
+                        field_name = field_spec.get('field')
                         field_info = self.model_fields[field_name].copy()
                         
-                        # Apply field overrides
-                        if 'field_overrides' in config and field_name in config['field_overrides']:
-                            field_info.update(config['field_overrides'][field_name])
+                        # Apply field-specific overrides
+                        if 'overrides' in field_spec:
+                            field_info.update(field_spec['overrides'])
                         
-                        field_configs.append(field_info)
+                        # Handle dynamic AJAX configuration
+                        if 'ajax' in field_spec:
+                            ajax_config = field_spec['ajax']
+                            
+                            # Generate unique AJAX config key
+                            ajax_key = f"{field_name}_ajax_{cat['key']}"
+                            
+                            # Add the AJAX config to shared configs
+                            self.add_ajax_config(
+                                ajax_key,
+                                ajax_config['endpoint'],
+                                method=ajax_config.get('method', 'GET'),
+                                events=ajax_config.get('events', ['change']),
+                                debounce=ajax_config.get('debounce', 300)
+                            )
+                            
+                            # Update field to reference the AJAX config
+                            field_info.update({
+                                'field_type': ajax_config.get('field_type', 'ajax_select'),
+                                'ajax_config': ajax_key,
+                                'search_field': ajax_config.get('search_field'),
+                                'display_field': ajax_config.get('display_field'),
+                                'value_field': ajax_config.get('value_field', 'id')
+                            })
+                    
+                    field_configs.append(field_info)
                 
                 self.add_category(cat['key'], cat['title'], field_configs)
         
