@@ -6,7 +6,9 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
+# Only register the combined approach
 router.register('alarmplan', views.AlarmplanViewSet)
+router.register('emergency-planning', views.EmergencyPlanningViewSet, basename='emergency-planning')
 
 app_name = 'Alarmplan'
 
