@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List, Union
 from django.db.models import Model
-from .json_form_creator import JsonFormCreator, ModelMetadataProvider
+from .json_form_creator import JsonFormCreator, SingleModelFormCreator, MultiModelFormCreator
 
 class FormSchemaFactory(ABC):
     """Abstract factory for creating form schemas."""
@@ -20,8 +20,7 @@ class SingleModelFormFactory(FormSchemaFactory):
         return SingleModelFormCreator(
             model_class=model_class,
             form_id=form_id,
-            form_title=form_title,
-            **kwargs
+            form_title=form_title
         )
 
 class MultiModelFormFactory(FormSchemaFactory):
@@ -33,8 +32,7 @@ class MultiModelFormFactory(FormSchemaFactory):
         return MultiModelFormCreator(
             models=models,
             form_id=form_id,
-            form_title=form_title,
-            **kwargs
+            form_title=form_title
         )
 
 # Factory method for easy access

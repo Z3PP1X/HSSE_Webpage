@@ -1,32 +1,37 @@
-from django.shortcuts import render
-
-from . import serializers
-
-from rest_framework import viewsets, status
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.http import JsonResponse
-
+from rest_framework import status
+from rest_framework import viewsets
+from .serializers import CombinedEmergencyFormSerializer
 from .models import Alarmplan, ContactPerson
+from rest_framework.permissions import AllowAny
 
 class AlarmplanViewSet(viewsets.ModelViewSet):
-    """
-    Endpoint for CRUD operations on the Alarmplan Model.
-    """
-    serializer_class = serializers.AlarmplanSerializer
+    """ViewSet for Alarmplan operations - uses combined form approach."""
     queryset = Alarmplan.objects.all()
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-    lookup_field = ('RelatedBranch')
+    serializer_class = CombinedEmergencyFormSerializer
+    
+    @action(detail=False, methods=['get'], permission_classes=[AllowAny])
+    def form_schema(self, request):
+        """Get combined form schema for Alarmplan creation/editing."""
+        schema = CombinedEmergencyFormSerializer.get_form_schema()
+        return Response(schema)
 
-class ContactPersonViewSet(viewsets.ModelViewSet):
-    """
-    Endpoint for CRUD operations on the Contact Person Model.
-    """
-
-    serializer_class = serializers.ContactPersonSerializer
-    queryset = ContactPerson.objects.all()
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-    lookup_field = ('')
+class EmergencyPlanningViewSet(viewsets.ViewSet):
+    """ViewSet for emergency planning operations using combined models."""
+    
+    @action(detail=False, methods=['get'])
+    def form_schema(self, request):
+        """Get combined form schema for emergency planning."""
+        schema = CombinedEmergencyFormSerializer.get_form_schema()
+        return Response(schema)
+    
+    def create(self, request):
+        """Create an emergency plan with associated contacts."""
+        # Implementation for creating combined Alarmplan + ContactPersons
+        pass
+    
+    def update(self, request, pk=None):
+        """Update an emergency plan with associated contacts."""
+        # Implementation for updating combined data
+        pass
