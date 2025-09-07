@@ -198,6 +198,202 @@ class SingleModelFormCreator(JsonFormCreator, ModelMetadataProvider):
         return self.schema
 
 class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
+    """Creator for forms based on multiple Django models with support for multiple instances."""
+    
+    def __init__(self, models: Dict[str, models.Model] = None, 
+                 config: Dict = None, form_id: str = None, 
+                 form_title: str = None):
+        """
+        Initialize with either models dict (legacy) or config object (new).
+        
+        Config structure:
+        {
+            "models": {
+                "contact_primary": {
+                    "model": ContactPerson,
+                    "instance_label": "Primary Contact"
+                },
+                "contact_secondary": {
+                    "model": ContactPerson, 
+                    "instance_label": "Secondary Contact"
+                },
+                "alarmplan": {
+                    "model": Alarmplan,
+                    "instance_label": "Alarm Plan"
+                }
+            }
+        }
+        """
+        if config:
+            self.models = {}
+            self.model_instances = config.get('models', {})
+            # Extract unique models for metadata extraction
+            for instance_key, instance_config in self.model_instances.items():
+                model_class = instance_config['model']
+                self.models[model_class.__name__] = model_class
+        elif models:
+            # Legacy support
+            self.models = models
+            self.model_instances = {
+                model_name.lower(): {
+                    'model': model_class,
+                    'instance_label': model_class.__name__
+                }
+                for model_name, model_class in models.items()
+            }
+        else:
+            raise ValueError("Either 'models' or 'config' must be provided")
+        
+        super().__init__(
+            form_id=form_id or "multi_model_form",
+            form_title=form_title or "Multi Model Form"
+        )
+        
+        self.all_model_fields = {}
+        self._extract_all_model_fields()
+    
+    def _extract_all_model_fields(self):
+        """Extract field metadata from all model instances."""
+        for instance_key, instance_config in self.model_instances.items():
+            model_class = instance_config['model']
+            instance_label = instance_config.get('instance_label', model_class.__name__)
+            
+            model_metadata = self._get_model_metadata_for_instance(
+                model_class, instance_key, instance_label
+            )
+            self.all_model_fields.update(model_metadata)
+    
+    def _get_model_metadata_for_instance(self, model_class: models.Model, 
+                                       instance_key: str, instance_label: str) -> Dict[str, dict]:
+        """Extract metadata for a specific model instance."""
+        form_fields = fields_for_model(model_class)
+        metadata = {}
+        
+        for field_name, form_field in form_fields.items():
+            try:
+                model_field = model_class._meta.get_field(field_name)
+                # Use instance key as prefix instead of model name
+                prefixed_name = f"{instance_key}_{field_name}"
+                
+                # Create default label combining instance label with field name
+                default_label = f"{instance_label} - {model_field.verbose_name or field_name.replace('_', ' ').title()}"
+                
+                metadata[prefixed_name] = {
+                    "key": prefixed_name,
+                    "original_key": field_name,
+                    "instance_key": instance_key,
+                    "label": default_label,
+                    "help_text": model_field.help_text or "",
+                    "required": not model_field.blank,
+                    "field_type": self._get_field_type(model_field),
+                    "choices": self._get_field_choices(model_field),
+                    "model": model_class.__name__
+                }
+            except FieldDoesNotExist:
+                continue
+                
+        return metadata
+    
+    def configure_from_dict(self, config: dict):
+        """Configure the form schema from a dictionary with support for custom questions."""
+        # Apply AJAX configs
+        if 'ajax_configs' in config:
+            for key, cfg in config['ajax_configs'].items():
+                self.add_ajax_config(
+                    key, 
+                    cfg['endpoint'], 
+                    method=cfg.get('method', 'GET'),
+                    events=cfg.get('events'),
+                    debounce=cfg.get('debounce', 300)
+                )
+        
+        # Handle categories with model-specific field mapping
+        if 'categories' in config:
+            for cat in config['categories']:
+                field_configs = []
+                
+                for field_spec in cat.get('fields', []):
+                    if isinstance(field_spec, str):
+                        # Simple field reference - try to find in all model fields
+                        if field_spec in self.all_model_fields:
+                            field_info = self.all_model_fields[field_spec].copy()
+                            field_configs.append(field_info)
+                    elif isinstance(field_spec, dict):
+                        field_info = self._process_field_spec(field_spec)
+                        if field_info:
+                            field_configs.append(field_info)
+                
+                self.add_category(cat['key'], cat['title'], field_configs)
+        
+        return self
+    
+    def _process_field_spec(self, field_spec: dict) -> Union[Dict, None]:
+        """Process a field specification and return field info."""
+        # Support for instance-based field specification
+        if 'instance' in field_spec and 'field' in field_spec:
+            instance_key = field_spec['instance']
+            field_name = field_spec['field']
+            prefixed_name = f"{instance_key}_{field_name}"
+            
+            if prefixed_name in self.all_model_fields:
+                field_info = self.all_model_fields[prefixed_name].copy()
+                
+                # Override label with custom question if provided
+                if 'question' in field_spec:
+                    field_info['label'] = field_spec['question']
+                
+                # Apply any other field-specific overrides
+                if 'overrides' in field_spec:
+                    field_info.update(field_spec['overrides'])
+                
+                # Handle AJAX configuration
+                if 'ajax' in field_spec:
+                    self._apply_ajax_config(field_info, field_spec['ajax'], prefixed_name)
+                
+                return field_info
+        
+        # Legacy support for model-based specification
+        elif 'model' in field_spec and 'field' in field_spec:
+            model_name = field_spec['model']
+            field_name = field_spec['field']
+            
+            # Find the first instance of this model
+            for instance_key, instance_config in self.model_instances.items():
+                if instance_config['model'].__name__ == model_name:
+                    prefixed_name = f"{instance_key}_{field_name}"
+                    if prefixed_name in self.all_model_fields:
+                        field_info = self.all_model_fields[prefixed_name].copy()
+                        
+                        # Apply overrides and AJAX as before
+                        if 'overrides' in field_spec:
+                            field_info.update(field_spec['overrides'])
+                        if 'ajax' in field_spec:
+                            self._apply_ajax_config(field_info, field_spec['ajax'], prefixed_name)
+                        
+                        return field_info
+                    break
+        
+        return None
+    
+    def _apply_ajax_config(self, field_info: dict, ajax_config: dict, field_key: str):
+        """Apply AJAX configuration to a field."""
+        ajax_key = f"{field_key}_ajax"
+        
+        self.add_ajax_config(
+            ajax_key,
+            ajax_config['endpoint'],
+            method=ajax_config.get('method', 'GET'),
+            events=ajax_config.get('events', ['change']),
+            debounce=ajax_config.get('debounce', 300)
+        )
+        
+        field_info.update({
+            'field_type': ajax_config.get('field_type', 'ajax_select'),
+            'ajax_config': ajax_key,
+            'search_field': ajax_config.get('search_field'),
+            'display_field': ajax_config.get('display_field'),
+            'value_field': ajax_config.get('value_field', 'id')
+        })
     """Creator for forms based on multiple Django models."""
     
     def __init__(self, models: Dict[str, models.Model], form_id: str = None, 
