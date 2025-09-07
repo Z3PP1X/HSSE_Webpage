@@ -35,9 +35,7 @@ class AlarmplanSerializer(serializers.ModelSerializer):
         creator.configure_from_dict(config)
         return creator.build()
 
-
 class ContactPersonSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ContactPerson
         fields = ("ContactPersonName", "ContactPersonPhoneNumber", "ContactPersonEmail", "ContactType")
@@ -83,7 +81,10 @@ class CombinedEmergencyFormSerializer(serializers.Serializer):
         """Generate form schema combining Alarmplan and ContactPerson models."""
         factory = get_form_factory('multi')
         creator = factory.create_form_creator(
-            models={'alarmplan': Alarmplan, 'contact': ContactPerson},
+            models={
+                'Alarmplan': Alarmplan,  # Use proper model name capitalization
+                'ContactPerson': ContactPerson
+            },
             form_id="alarmplan_form",
             form_title="Emergency Alarm Plan"
         )
@@ -109,6 +110,16 @@ class CombinedEmergencyFormSerializer(serializers.Serializer):
                                 'value_field': 'sys_id'
                             }
                         }
+                    ]
+                },
+                {
+                    'key': 'emergency_contacts',
+                    'title': 'Emergency Contact Persons',
+                    'fields': [
+                        {'model': 'ContactPerson', 'field': 'ContactPersonName'},
+                        {'model': 'ContactPerson', 'field': 'ContactPersonEmail'},
+                        {'model': 'ContactPerson', 'field': 'ContactPersonPhoneNumber'},
+                        {'model': 'ContactPerson', 'field': 'ContactType'}
                     ]
                 }
             ]
