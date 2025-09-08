@@ -17,13 +17,15 @@ class Alarmplan(tableModel.Table):
     Active = models.BooleanField(default=True)
     RelatedBranch = models.ForeignKey(BranchNetwork, null=True, on_delete=models.SET_NULL)
     contactPerson = models.ManyToManyField("ContactPerson")
+    AssemblyPoint = models.CharField(max_length=255, blank=True)
+    PoisonEmergencyHotline = models.CharField(max_length=255, blank=True)
 
 
 class ContactPerson(tableModel.Table):
     """Contact Person Model"""
     RelatedBranch = models.ForeignKey(BranchNetwork, null=True, on_delete=models.SET_NULL)
     ContactPersonName = models.CharField(max_length=255, blank=False)
-    ContactPersonPhoneNumber = models.CharField(max_length=255, blank=True)
+    ContactPersonPhoneNumber = models.IntegerField(max_length=255, blank=True)
     ContactPersonEmail = models.EmailField(blank=True)
     ContactType = models.IntegerField(blank=False, choices=ContactType.choices)
 

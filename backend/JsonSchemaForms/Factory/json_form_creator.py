@@ -38,14 +38,24 @@ class JsonFormCreator(ABC):
         }
         return self
     
-    def add_category(self, key: str, title: str, fields: List[dict] = None):
+    def add_category(self, key: str, title: str, fields: List[dict] = None, expandable: bool = False, 
+                min_instances: int = None, max_instances: int = None):
         """Add a category with fields to the form structure."""
         category = {
             "key": key,
             "title": title,
             "isCategory": True,
+            "expandable": expandable,
             "fields": fields or []
         }
+        
+        # Add instance constraints for expandable categories
+        if expandable:
+            if min_instances is not None:
+                category["min_instances"] = min_instances
+            if max_instances is not None:
+                category["max_instances"] = max_instances
+        
         self.schema["structure"].append(category)
         return self
 
@@ -59,6 +69,9 @@ class ModelMetadataProvider(ABC):
 
     def _get_field_type(self, field) -> str:
         """Convert Django field type to form field type."""
+
+        
+    
         field_class = field.__class__.__name__
         field_type_map = {
             'CharField': 'text',
@@ -197,6 +210,7 @@ class SingleModelFormCreator(JsonFormCreator, ModelMetadataProvider):
         """Build and return the complete form schema."""
         return self.schema
 
+# In json_form_creator.py - MultiModelFormCreator class
 class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
     """Creator for forms based on multiple Django models with support for multiple instances."""
     
@@ -205,24 +219,6 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                  form_title: str = None):
         """
         Initialize with either models dict (legacy) or config object (new).
-        
-        Config structure:
-        {
-            "models": {
-                "contact_primary": {
-                    "model": ContactPerson,
-                    "instance_label": "Primary Contact"
-                },
-                "contact_secondary": {
-                    "model": ContactPerson, 
-                    "instance_label": "Secondary Contact"
-                },
-                "alarmplan": {
-                    "model": Alarmplan,
-                    "instance_label": "Alarm Plan"
-                }
-            }
-        }
         """
         if config:
             self.models = {}
@@ -232,7 +228,7 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                 model_class = instance_config['model']
                 self.models[model_class.__name__] = model_class
         elif models:
-            # Legacy support
+            # Legacy support - convert to new format internally
             self.models = models
             self.model_instances = {
                 model_name.lower(): {
@@ -251,7 +247,33 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
         
         self.all_model_fields = {}
         self._extract_all_model_fields()
-    
+
+    def _get_model_metadata(self, model_class: models.Model) -> Dict[str, dict]:
+        """Extract metadata from a specific model (legacy method for backward compatibility)."""
+        form_fields = fields_for_model(model_class)
+        metadata = {}
+        
+        for field_name, form_field in form_fields.items():
+            try:
+                model_field = model_class._meta.get_field(field_name)
+                # Prefix field name with model name to avoid conflicts (legacy format)
+                prefixed_name = f"{model_class.__name__.lower()}_{field_name}"
+                
+                metadata[prefixed_name] = {
+                    "key": prefixed_name,
+                    "original_key": field_name,
+                    "label": model_field.verbose_name or field_name.replace('_', ' ').title(),
+                    "help_text": model_field.help_text or "",
+                    "required": not model_field.blank,
+                    "field_type": self._get_field_type(model_field),
+                    "choices": self._get_field_choices(model_field),
+                    "model": model_class.__name__
+                }
+            except FieldDoesNotExist:
+                continue
+                
+        return metadata
+
     def _extract_all_model_fields(self):
         """Extract field metadata from all model instances."""
         for instance_key, instance_config in self.model_instances.items():
@@ -262,7 +284,7 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                 model_class, instance_key, instance_label
             )
             self.all_model_fields.update(model_metadata)
-    
+
     def _get_model_metadata_for_instance(self, model_class: models.Model, 
                                        instance_key: str, instance_label: str) -> Dict[str, dict]:
         """Extract metadata for a specific model instance."""
@@ -293,9 +315,9 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                 continue
                 
         return metadata
-    
+
     def configure_from_dict(self, config: dict):
-        """Configure the form schema from a dictionary with support for custom questions."""
+        """Configure the form schema from a dictionary with support for custom questions and expandable categories."""
         # Apply AJAX configs
         if 'ajax_configs' in config:
             for key, cfg in config['ajax_configs'].items():
@@ -312,6 +334,9 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
             for cat in config['categories']:
                 field_configs = []
                 
+                # Check if category is expandable
+                is_expandable = cat.get('expandable', False)
+                
                 for field_spec in cat.get('fields', []):
                     if isinstance(field_spec, str):
                         # Simple field reference - try to find in all model fields
@@ -319,17 +344,25 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                             field_info = self.all_model_fields[field_spec].copy()
                             field_configs.append(field_info)
                     elif isinstance(field_spec, dict):
-                        field_info = self._process_field_spec(field_spec)
+                        field_info = self._process_field_spec(field_spec, is_expandable, cat['key'])
                         if field_info:
                             field_configs.append(field_info)
                 
-                self.add_category(cat['key'], cat['title'], field_configs)
+                # Add category with expandable information
+                self.add_category(
+                    cat['key'], 
+                    cat['title'], 
+                    field_configs,
+                    expandable=is_expandable,
+                    min_instances=cat.get('min_instances'),
+                    max_instances=cat.get('max_instances')
+                )
         
         return self
-    
-    def _process_field_spec(self, field_spec: dict) -> Union[Dict, None]:
+
+    def _process_field_spec(self, field_spec: dict, is_expandable: bool = False, category_key: str = None) -> Union[Dict, None]:
         """Process a field specification and return field info."""
-        # Support for instance-based field specification
+        # Support for instance-based field specification (NEW)
         if 'instance' in field_spec and 'field' in field_spec:
             instance_key = field_spec['instance']
             field_name = field_spec['field']
@@ -338,9 +371,24 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
             if prefixed_name in self.all_model_fields:
                 field_info = self.all_model_fields[prefixed_name].copy()
                 
-                # Override label with custom question if provided
+                # Use question as key if provided, with category prefix to avoid conflicts
                 if 'question' in field_spec:
-                    field_info['label'] = field_spec['question']
+                    base_key = field_spec['question']
+                    if category_key:
+                        base_key = f"{category_key}_{base_key}"
+                    
+                    if is_expandable:
+                        field_info['key_template'] = base_key
+                        field_info['key'] = f"{base_key}_{{index}}"
+                    else:
+                        field_info['key'] = base_key
+                    field_info['label'] = field_spec['question']  # Keep clean label
+                
+                # Mark field as expandable if category is expandable
+                if is_expandable:
+                    field_info['expandable'] = True
+                    field_info['original_key'] = field_name
+                    field_info['model'] = field_spec.get('model')
                 
                 # Apply any other field-specific overrides
                 if 'overrides' in field_spec:
@@ -348,7 +396,10 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                 
                 # Handle AJAX configuration
                 if 'ajax' in field_spec:
-                    self._apply_ajax_config(field_info, field_spec['ajax'], prefixed_name)
+                    ajax_key_base = field_spec['question'] if 'question' in field_spec else prefixed_name
+                    if is_expandable:
+                        ajax_key_base = f"{ajax_key_base}_{{index}}"
+                    self._apply_ajax_config(field_info, field_spec['ajax'], ajax_key_base)
                 
                 return field_info
         
@@ -364,17 +415,39 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                     if prefixed_name in self.all_model_fields:
                         field_info = self.all_model_fields[prefixed_name].copy()
                         
+                        # Use question as key if provided, with category prefix to avoid conflicts
+                        if 'question' in field_spec:
+                            base_key = field_spec['question']
+                            if category_key:
+                                base_key = f"{category_key}_{base_key}"
+                            
+                            if is_expandable:
+                                field_info['key_template'] = base_key
+                                field_info['key'] = f"{base_key}_{{index}}"
+                            else:
+                                field_info['key'] = base_key
+                            field_info['label'] = field_spec['question']  # Keep clean label
+                        
+                        # Mark field as expandable if category is expandable
+                        if is_expandable:
+                            field_info['expandable'] = True
+                            field_info['original_key'] = field_name
+                            field_info['model'] = model_name
+                        
                         # Apply overrides and AJAX as before
                         if 'overrides' in field_spec:
                             field_info.update(field_spec['overrides'])
                         if 'ajax' in field_spec:
-                            self._apply_ajax_config(field_info, field_spec['ajax'], prefixed_name)
+                            ajax_key_base = field_spec['question'] if 'question' in field_spec else prefixed_name
+                            if is_expandable:
+                                ajax_key_base = f"{ajax_key_base}_{{index}}"
+                            self._apply_ajax_config(field_info, field_spec['ajax'], ajax_key_base)
                         
                         return field_info
                     break
         
         return None
-    
+
     def _apply_ajax_config(self, field_info: dict, ajax_config: dict, field_key: str):
         """Apply AJAX configuration to a field."""
         ajax_key = f"{field_key}_ajax"
@@ -394,97 +467,7 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
             'display_field': ajax_config.get('display_field'),
             'value_field': ajax_config.get('value_field', 'id')
         })
-    """Creator for forms based on multiple Django models."""
-    
-    def __init__(self, models: Dict[str, models.Model], form_id: str = None, 
-                 form_title: str = None):
-        self.models = models
-        
-        super().__init__(
-            form_id=form_id or "multi_model_form",
-            form_title=form_title or "Multi Model Form"
-        )
-        
-        self.all_model_fields = {}
-        self._extract_all_model_fields()
-    
-    def _get_model_metadata(self, model_class: models.Model) -> Dict[str, dict]:
-        """Extract metadata from a specific model."""
-        form_fields = fields_for_model(model_class)
-        metadata = {}
-        
-        for field_name, form_field in form_fields.items():
-            try:
-                model_field = model_class._meta.get_field(field_name)
-                # Prefix field name with model name to avoid conflicts
-                prefixed_name = f"{model_class.__name__.lower()}_{field_name}"
-                
-                metadata[prefixed_name] = {
-                    "key": prefixed_name,
-                    "original_key": field_name,
-                    "label": model_field.verbose_name or field_name.replace('_', ' ').title(),
-                    "help_text": model_field.help_text or "",
-                    "required": not model_field.blank,
-                    "field_type": self._get_field_type(model_field),
-                    "choices": self._get_field_choices(model_field),
-                    "model": model_class.__name__
-                }
-            except FieldDoesNotExist:
-                continue
-                
-        return metadata
-    
-    def _extract_all_model_fields(self):
-        """Extract field metadata from all models."""
-        for model_name, model_class in self.models.items():
-            model_metadata = self._get_model_metadata(model_class)
-            self.all_model_fields.update(model_metadata)
-    
-    def configure_from_dict(self, config: dict):
-        """Configure the form schema from a dictionary."""
-        # Apply AJAX configs
-        if 'ajax_configs' in config:
-            for key, cfg in config['ajax_configs'].items():
-                self.add_ajax_config(
-                    key, 
-                    cfg['endpoint'], 
-                    method=cfg.get('method', 'GET'),
-                    events=cfg.get('events'),
-                    debounce=cfg.get('debounce', 300)
-                )
-        
-        # Handle categories with model-specific field mapping
-        if 'categories' in config:
-            for cat in config['categories']:
-                field_configs = []
-                
-                for field_spec in cat.get('fields', []):
-                    # Field spec can be either string or dict with model info
-                    if isinstance(field_spec, str):
-                        # Try to find field in all models
-                        if field_spec in self.all_model_fields:
-                            field_info = self.all_model_fields[field_spec].copy()
-                            field_configs.append(field_info)
-                    elif isinstance(field_spec, dict):
-                        # Explicit model.field specification
-                        model_name = field_spec.get('model')
-                        field_name = field_spec.get('field')
-                        
-                        if model_name and field_name:
-                            prefixed_name = f"{model_name.lower()}_{field_name}"
-                            if prefixed_name in self.all_model_fields:
-                                field_info = self.all_model_fields[prefixed_name].copy()
-                                
-                                # Apply any field-specific overrides
-                                if 'overrides' in field_spec:
-                                    field_info.update(field_spec['overrides'])
-                                
-                                field_configs.append(field_info)
-                
-                self.add_category(cat['key'], cat['title'], field_configs)
-        
-        return self
-    
+
     def build(self) -> dict:
         """Build and return the complete form schema."""
         return self.schema

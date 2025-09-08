@@ -2,76 +2,8 @@ from rest_framework import serializers
 from .models import Alarmplan, ContactPerson
 from EnterpriseProfile.branchNetwork.BranchNetwork import BranchNetwork
 from JsonSchemaForms.Factory.form_schema_factory import get_form_factory
+from .config import ALARMPLAN_FORM_CONFIG
 
-class AlarmplanSerializer(serializers.ModelSerializer):
-    RelatedBranch = serializers.SlugRelatedField(
-            slug_field='CostCenter',
-            queryset=BranchNetwork.objects.all()
-        )
-    class Meta:
-        model = Alarmplan
-        fields = '__all__'
-
-    @staticmethod
-    def get_form_schema():
-        """Generate form schema for Alarmplan model."""
-        factory = get_form_factory('single')
-        creator = factory.create_form_creator(
-            model_class=Alarmplan,
-            form_id="alarmplan_form",
-            form_title="Alarm Plan Form"
-        )
-        
-        config = {
-            'categories': [
-                {
-                    'key': 'plan_details',
-                    'title': 'Plan Details',
-                    'fields': ['Active', 'RelatedBranch']
-                }
-            ]
-        }
-        
-        creator.configure_from_dict(config)
-        return creator.build()
-
-class ContactPersonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ContactPerson
-        fields = ("ContactPersonName", "ContactPersonPhoneNumber", "ContactPersonEmail", "ContactType")
-        extra_kwargs = {
-            'ContactPersonName': {'required': True},
-            'ContactType': {'required': True}
-        }
-        read_only_fields = ('RelatedBranch',)
-
-    @staticmethod
-    def get_form_schema():
-        """Generate form schema for ContactPerson model."""
-        factory = get_form_factory('single')
-        creator = factory.create_form_creator(
-            model_class=ContactPerson,
-            form_id="contact_person_form",
-            form_title="Contact Person Form"
-        )
-        
-        config = {
-            'categories': [
-                {
-                    'key': 'contact_info',
-                    'title': 'Contact Information',
-                    'fields': ['ContactPersonName', 'ContactPersonEmail', 'ContactPersonPhoneNumber']
-                },
-                {
-                    'key': 'classification',
-                    'title': 'Classification',
-                    'fields': ['ContactType']
-                }
-            ]
-        }
-        
-        creator.configure_from_dict(config)
-        return creator.build()
 
 class CombinedEmergencyFormSerializer(serializers.Serializer):
     """Serializer for combined emergency planning form using multiple models."""
@@ -82,48 +14,13 @@ class CombinedEmergencyFormSerializer(serializers.Serializer):
         factory = get_form_factory('multi')
         creator = factory.create_form_creator(
             models={
-                'Alarmplan': Alarmplan,  # Use proper model name capitalization
+                'Alarmplan': Alarmplan,
                 'ContactPerson': ContactPerson
             },
             form_id="alarmplan_form",
             form_title="Emergency Alarm Plan"
         )
         
-        config = {
-            'categories': [
-                {
-                    'key': 'plan_setup',
-                    'title': 'Plan Configuration',
-                    'fields': [
-                        {'model': 'Alarmplan', 'field': 'Active'},
-                        {
-                            'model': 'Alarmplan', 
-                            'field': 'RelatedBranch',
-                            'ajax': {
-                                'endpoint': '/api/branchnetwork/costcenters/',
-                                'method': 'GET',
-                                'events': ['input', 'focus'],
-                                'debounce': 300,
-                                'field_type': 'ajax_select',
-                                'search_field': 'CostCenter',
-                                'display_field': 'BranchName',
-                                'value_field': 'sys_id'
-                            }
-                        }
-                    ]
-                },
-                {
-                    'key': 'emergency_contacts',
-                    'title': 'Emergency Contact Persons',
-                    'fields': [
-                        {'model': 'ContactPerson', 'field': 'ContactPersonName'},
-                        {'model': 'ContactPerson', 'field': 'ContactPersonEmail'},
-                        {'model': 'ContactPerson', 'field': 'ContactPersonPhoneNumber'},
-                        {'model': 'ContactPerson', 'field': 'ContactType'}
-                    ]
-                }
-            ]
-        }
-        
-        creator.configure_from_dict(config)
+        # Use the imported config instead of inline config
+        creator.configure_from_dict(ALARMPLAN_FORM_CONFIG)
         return creator.build()

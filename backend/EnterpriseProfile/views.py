@@ -25,8 +25,7 @@ class BranchRecordViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.BranchUpdateSerializer
     queryset = BranchNetwork.objects.all()
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    
     lookup_field = ('CostCenter')
 
     def get_queryset(self):
@@ -57,8 +56,8 @@ class CostCenterListView(generics.ListAPIView):
 
     Endpoint for retrieving a list of cost centers.
     """
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    
+    
     queryset = BranchNetwork.objects.all()
     serializer_class = serializers.BranchUpdateSerializer
     filter_backends = [filters.SearchFilter]
