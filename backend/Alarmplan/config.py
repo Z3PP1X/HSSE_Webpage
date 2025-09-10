@@ -7,7 +7,7 @@ ALARMPLAN_FORM_CONFIG = {
             "expandable": False,  # Static category
             "fields": [
                 {
-                    "model": "Alarmplan", 
+                    "model": "Alarmplan",
                     "field": "RelatedBranch",
                     "ajax": {
                         "endpoint": "/api/branchnetwork/costcenters/",
@@ -28,7 +28,7 @@ ALARMPLAN_FORM_CONFIG = {
             "expandable": False,  # Static category
             "fields": [
                 {"model": "Alarmplan", "field": "AssemblyPoint", "question": "Sammelplatz"},
-                
+
             ]
         },
         {
@@ -39,21 +39,21 @@ ALARMPLAN_FORM_CONFIG = {
             "max_instances": 5,  # Optional: maximum allowed instances
             "fields": [
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonName",
                     "question": "Name"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonEmail",
                     "question": "Email"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonPhoneNumber",
                     "question": "Telefonnummer"
                 },
-                
+
             ]
         },
         {
@@ -64,16 +64,16 @@ ALARMPLAN_FORM_CONFIG = {
             "max_instances": 5,  # Optional: maximum allowed instances
             "fields": [
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonName",
                     "question": "Name"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonEmail",
                     "question": "Email"
                 },
-                
+
             ]
         },
         {
@@ -84,22 +84,22 @@ ALARMPLAN_FORM_CONFIG = {
             "max_instances": 10,  # Optional: maximum allowed instances
             "fields": [
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonName",
                     "question": "Name des Krankenhauses"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonEmail",
                     "question": "Straße und Hausnummer"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonPhoneNumber",
                     "question": "Postleitzahl"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactType",
                     "question": "Telefonnummer"
                 }
@@ -113,27 +113,27 @@ ALARMPLAN_FORM_CONFIG = {
             "max_instances": 10,  # Optional: maximum allowed instances
             "fields": [
                 {
-                    "model": "Alarmplan", 
+                    "model": "Alarmplan",
                     "field": "PoisonEmergencyHotline",
                     "question": "Nummer des Giftnotrufs"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonName",
                     "question": "Name des Branch Managers"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonEmail",
                     "question": "Email des Branch Managers"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonName",
                     "question": "Name des Geschaftsführers"
                 },
                 {
-                    "model": "ContactPerson", 
+                    "model": "ContactPerson",
                     "field": "ContactPersonEmail",
                     "question": "Email des Geschäftsführers"
                 },

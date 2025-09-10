@@ -3,8 +3,6 @@ Views for the Branch Network APIs.
 """
 
 from rest_framework import viewsets, status, generics, filters
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 
@@ -25,7 +23,7 @@ class BranchRecordViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.BranchUpdateSerializer
     queryset = BranchNetwork.objects.all()
-    
+
     lookup_field = ('CostCenter')
 
     def get_queryset(self):
@@ -51,13 +49,13 @@ class BranchRecordViewSet(viewsets.ModelViewSet):
             return Response({'status': 'error', 'message': str(e)},
                             status=status.HTTP_400_BAD_REQUEST)
 
+
 class CostCenterListView(generics.ListAPIView):
     """
 
     Endpoint for retrieving a list of cost centers.
     """
-    
-    
+
     queryset = BranchNetwork.objects.all()
     serializer_class = serializers.BranchUpdateSerializer
     filter_backends = [filters.SearchFilter]
@@ -66,4 +64,3 @@ class CostCenterListView(generics.ListAPIView):
                     '^BranchName',
                     'BranchName',
                      ]
-
