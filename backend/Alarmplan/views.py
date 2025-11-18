@@ -24,17 +24,19 @@ class AlarmplanViewSet(viewsets.ModelViewSet):
 
 class EmergencyPlanningViewSet(viewsets.ViewSet):
     """ViewSet for emergency planning operations using combined models."""
-    
+
     @extend_schema(
             responses={200: dict},
             description='Get combined form schema for emergency planning.'
     )
-    
-    @action(detail=False, methods=['get'])
+    @action(
+        detail=False,
+        methods=['get'])
     def form_schema(self, request):
         """Get combined form schema for emergency planning."""
         schema = CombinedEmergencyFormSerializer.get_form_schema()
         return Response(schema)
+
     @extend_schema(
             request=CombinedEmergencyFormSerializer,
             responses={201: CombinedEmergencyFormSerializer},
@@ -44,6 +46,7 @@ class EmergencyPlanningViewSet(viewsets.ViewSet):
         """Create an emergency plan with associated contacts."""
         # Implementation for creating combined Alarmplan + ContactPersons
         pass
+
     @extend_schema(
             request=CombinedEmergencyFormSerializer,
             responses={200: CombinedEmergencyFormSerializer},
