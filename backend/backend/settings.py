@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env_path = load_dotenv(os.path.join(BASE_DIR, 'backend.env'))
 load_dotenv(env_path)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -165,6 +167,9 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 SECURE_SSL_REDIRECT = True
+
+if 'test' in sys.argv:
+    SECURE_SSL_REDIRECT = False
 
 SECURE_HSTS_PRELOAD = True
 

@@ -24,6 +24,7 @@ class PublicUserApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.client.defaults['CONTENT_TYPE'] = 'application/json'
 
     def test_create_user_success(self):
         """Test creating a user is successfull."""
@@ -33,7 +34,7 @@ class PublicUserApiTests(TestCase):
             'password': 'testpass123',
             'name': 'Test Name'
         }
-        res = self.client.post(CREATE_USER_URL, payload)
+        res = self.client.post(CREATE_USER_URL, payload, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         user = get_user_model().objects.get(email=payload['email'])
@@ -48,7 +49,7 @@ class PublicUserApiTests(TestCase):
             'name': 'Test Name'
         }
         create_user(**payload)
-        res = self.client.post(CREATE_USER_URL, payload)
+        res = self.client.post(CREATE_USER_URL, payload, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_too_short(self):
@@ -58,7 +59,7 @@ class PublicUserApiTests(TestCase):
             'password': 'pw',
             'name': 'Test Name'
         }
-        res = self.client.post(CREATE_USER_URL, payload)
+        res = self.client.post(CREATE_USER_URL, payload, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         user_exists = get_user_model().objects.filter(
             email=payload['email']
@@ -78,7 +79,7 @@ class PublicUserApiTests(TestCase):
             'email': user_details['email'],
             'password': user_details['password'],
         }
-        res = self.client.post(TOKEN_URL, payload)
+        res = self.client.post(TOKEN_URL, payload, format='json')
 
         self.assertIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -90,7 +91,7 @@ class PublicUserApiTests(TestCase):
         payload = {
             'email': 'test@example.com',
             'password': 'badpass'}
-        res = self.client.post(TOKEN_URL, payload)
+        res = self.client.post(TOKEN_URL, payload, format='json')
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -100,7 +101,7 @@ class PublicUserApiTests(TestCase):
         payload = {
             'email': 'test@example.com',
             'password': ''}
-        res = self.client.post(TOKEN_URL, payload)
+        res = self.client.post(TOKEN_URL, payload, format='json')
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -135,7 +136,7 @@ class PrivateUserAPITests(TestCase):
 
     def test_post_me_not_allowed(self):
         """Test that POST is not allowed on the me url."""
-        res = self.client.post(ME_URL, {})
+        res = self.client.post(ME_URL, {}, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
