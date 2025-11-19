@@ -180,3 +180,8 @@ SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
 
+STATIC_ROOT = '/backend/staticfiles'
+
+STATIC_URL = '/static/'
+
+
