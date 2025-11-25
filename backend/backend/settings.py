@@ -11,15 +11,17 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-env_path = BASE_DIR / 'backend.env'
+env_file = find_dotenv()
 
-if env_path.exists():
-    load_dotenv(env_path)
+if not env_file:
+    raise FileNotFoundError("Keine .env-Datei gefunden!")
+
+load_dotenv(env_file)
 
 
 
