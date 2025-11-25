@@ -31,6 +31,6 @@ urlpatterns = [
          ),
     path("api/user/", include("User.urls")),
     path("api/alarmplan/", include("Alarmplan.urls")),
-    path('api/branchnetwork/', include('EnterpriseProfile.urls'))
-
+    path('api/branchnetwork/', include('EnterpriseProfile.urls')),
+    path('health/', include("Core.urls")),
 ]
