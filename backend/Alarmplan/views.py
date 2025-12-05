@@ -31,7 +31,8 @@ class EmergencyPlanningViewSet(viewsets.ViewSet):
     )
     @action(
         detail=False,
-        methods=['get'])
+        methods=['get'],
+        permission_classes=[AllowAny])
     def form_schema(self, request):
         """Get combined form schema for emergency planning."""
         schema = CombinedEmergencyFormSerializer.get_form_schema()
