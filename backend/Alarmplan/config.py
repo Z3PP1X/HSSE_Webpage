@@ -10,7 +10,7 @@ ALARMPLAN_FORM_CONFIG = {
                     "model": "Alarmplan",
                     "field": "RelatedBranch",
                     "ajax": {
-                        "endpoint": "/api/branchnetwork/costcenters/",
+                        "endpoint": "/api/branchnetwork/branchnetwork/",
                         "method": "GET",
                         "events": ["input", "focus"],
                         "debounce": 300,
