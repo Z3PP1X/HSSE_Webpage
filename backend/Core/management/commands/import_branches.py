@@ -3,21 +3,27 @@ This command takes the looker export from the active
 branches in germany and updates the internal database.
 """
 
-import json
+import csv
 from django.core.management.base import BaseCommand
 from EnterpriseProfile.branchNetwork.BranchNetwork import BranchNetwork
 
 
 class Command(BaseCommand):
     """Import json branch data to the model"""
+    help = "Imports branch data from csv"
+
+    def add_arguments(self, parser):
+        parser.add_argument('file_path', type=str, help='Pfad zur CSV-Datei')
 
     def handle(self, *args, **options):
-        payload = options.get('payload')
+        file_path = options['file_path']
 
         try:
-            data = json.loads(payload)
+            with open(file_path, mode='r', encoding='utf-8-sig') as file:
 
-            for entry in data:
+                reader = csv.DictReader(file, delimiter=';')
+
+            for entry in reader:
                 branch, created = BranchNetwork.objects.update_or_create(
                     CostCenter=entry["Branch ID"],
                     defaults={
@@ -42,5 +48,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(
                         f"{action}: {branch.BranchName}"))
 
+        except FileNotFoundError:
+            self.stderr.write(self.style.ERROR(f"Datei nicht gefunden: {file_path}"))
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error: {e}"))
