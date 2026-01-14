@@ -60,7 +60,7 @@ class CostCenterListView(generics.ListAPIView):
     serializer_class = serializers.BranchUpdateSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = [
-                    '^CostCenter',
+                    'CostCenter',
                     '^BranchName',
                     'BranchName',
                      ]
