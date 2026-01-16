@@ -56,32 +56,13 @@ ALARMPLAN_FORM_CONFIG = {
 
             ]
         },
-        {
-            "key": "Brandschutzhelfer",
-            "title": "Brandschutzhelfer",
-            "expandable": True,
-            "min_instances": 1,   # Optional: minimum required instances
-            "max_instances": 5,  # Optional: maximum allowed instances
-            "fields": [
-                {
-                    "model": "ContactPerson",
-                    "field": "ContactPersonName",
-                    "question": "Name"
-                },
-                {
-                    "model": "ContactPerson",
-                    "field": "ContactPersonEmail",
-                    "question": "Email"
-                },
-
-            ]
-        },
+        
         {
             "key": "Nächstes Krankenhaus",
             "title": "Nächstes Krankenhaus",
-            "expandable": False,  # Dynamic category - can have multiple instances
-            "min_instances": 1,   # Optional: minimum required instances
-            "max_instances": 10,  # Optional: maximum allowed instances
+            "expandable": False, 
+            "min_instances": 1,  
+            "max_instances": 10,  
             "fields": [
                 {
                     "model": "ContactPerson",
@@ -90,7 +71,7 @@ ALARMPLAN_FORM_CONFIG = {
                 },
                 {
                     "model": "ContactPerson",
-                    "field": "ContactPersonEmail",
+                    "field": "ContactPersonName",
                     "question": "Straße und Hausnummer"
                 },
                 {
@@ -126,6 +107,16 @@ ALARMPLAN_FORM_CONFIG = {
                     "model": "ContactPerson",
                     "field": "ContactPersonEmail",
                     "question": "Email des Branch Managers"
+                },
+                {
+                    "model": "ContactPerson",
+                    "field": "ContactPersonName",
+                    "question": "Name des Geschaftsführers"
+                },
+                {
+                    "model": "ContactPerson",
+                    "field": "ContactPersonEmail",
+                    "question": "Email des Geschäftsführers"
                 },
                 {
                     "model": "ContactPerson",
