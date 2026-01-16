@@ -396,6 +396,10 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                     field_info['original_key'] = field_name
                     field_info['model'] = field_spec.get('model')
 
+                # Propagate group information for frontend field grouping
+                if 'group' in field_spec:
+                    field_info['group'] = field_spec['group']
+
                 # Apply any other field-specific overrides
                 if 'overrides' in field_spec:
                     field_info.update(field_spec['overrides'])
@@ -442,6 +446,10 @@ class MultiModelFormCreator(JsonFormCreator, ModelMetadataProvider):
                             field_info['expandable'] = True
                             field_info['original_key'] = field_name
                             field_info['model'] = model_name
+
+                        # Propagate group information for frontend field grouping
+                        if 'group' in field_spec:
+                            field_info['group'] = field_spec['group']
 
                         # Apply overrides and AJAX as before
                         if 'overrides' in field_spec:
