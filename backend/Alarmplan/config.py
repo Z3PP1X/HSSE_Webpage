@@ -62,7 +62,7 @@ ALARMPLAN_FORM_CONFIG = {
             "title": "Nächstes Krankenhaus",
             "expandable": False, 
             "min_instances": 1,  
-            "max_instances": 10,  
+            "max_instances": 1,  
             "fields": [
                 {
                     "model": "ContactPerson",
@@ -101,32 +101,38 @@ ALARMPLAN_FORM_CONFIG = {
                 {
                     "model": "ContactPerson",
                     "field": "ContactPersonName",
-                    "question": "Name des Branch Managers"
+                    "question": "Name des Branch Managers",
+                    "group": "branchManager"
                 },
                 {
                     "model": "ContactPerson",
                     "field": "ContactPersonEmail",
-                    "question": "Email des Branch Managers"
+                    "question": "Email des Branch Managers",
+                    "group": "branchManager"
                 },
                 {
                     "model": "ContactPerson",
                     "field": "ContactPersonName",
-                    "question": "Name des Geschaftsführers"
+                    "question": "Name des Geschaftsführers",
+                    "group": "management1"
                 },
                 {
                     "model": "ContactPerson",
                     "field": "ContactPersonEmail",
-                    "question": "Email des Geschäftsführers"
+                    "question": "Email des Geschäftsführers",
+                    "group": "management1"
                 },
                 {
                     "model": "ContactPerson",
                     "field": "ContactPersonName",
-                    "question": "Name des Geschaftsführers"
+                    "question": "Name des Geschaftsführers",
+                    "group": "management2"
                 },
                 {
                     "model": "ContactPerson",
                     "field": "ContactPersonEmail",
-                    "question": "Email des Geschäftsführers"
+                    "question": "Email des Geschäftsführers",
+                    "group": "management2"
                 },
             ]
         },
