@@ -1,3 +1,4 @@
-from .branchNetwork.BranchNetwork import BranchNetwork # noqa
+from .branchNetwork.BGRegion import BGRegion  # noqa
+from .branchNetwork.BranchNetwork import BranchNetwork  # noqa
 
 # Create your models here.

@@ -1,5 +1,6 @@
 from django.db import models
 from Core.abstractModels import tableModel
+from .BGRegion import BGRegion
 
 
 class BranchNetwork(tableModel.Table):
@@ -8,6 +9,13 @@ class BranchNetwork(tableModel.Table):
     CostCenter = models.CharField(max_length=5, unique=True)
     Active = models.BooleanField(default=True)
     BranchName = models.CharField(max_length=100)
+
+    # Legal Entity Relationship
+    bg_regions = models.ManyToManyField(
+        BGRegion,
+        related_name='branches',
+        blank=True
+    )
 
     # Location Specific Fields:
 
