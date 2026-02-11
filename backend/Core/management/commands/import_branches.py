@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
         try:
             with open(file_path, mode='r', encoding='utf-8-sig') as file:
-                reader = csv.DictReader(file, delimiter=';')
+                reader = csv.DictReader(file, delimiter=',')
                 data = list(reader)
 
             # Phase 1: Import unique BG Regions and cache them
