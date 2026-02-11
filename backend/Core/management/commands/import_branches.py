@@ -11,7 +11,6 @@ from EnterpriseProfile.branchNetwork.BGRegion import BGRegion
 
 logger = logging.getLogger(__name__)
 
-
 class Command(BaseCommand):
     """Import branch data from CSV with separated logic for Regions and Branches."""
     help = "Imports branch data from csv"
@@ -50,11 +49,14 @@ class Command(BaseCommand):
 
         # Collect unique region data to minimize update_or_create calls
         for entry in data:
-            entity_code = entry.get("Entity_Code", "").strip()
+            # UPDATED KEY: Matches 'Contract Legal Entity Code' from your new CSV
+            entity_code = entry.get("Contract Legal Entity Code", "").strip()
+            
             if entity_code and entity_code not in unique_region_data:
                 unique_region_data[entity_code] = {
-                    "Contract_Legal_Name": entry.get("Contract_Legal_Name", ""),
-                    "Company_Number": entry.get("Company_Number", ""),
+                    # UPDATED KEYS: Match 'Contract Legal Entity: Name' and 'Unternehmensnummer'
+                    "Contract_Legal_Name": entry.get("Contract Legal Entity: Name", ""),
+                    "Company_Number": entry.get("Unternehmensnummer", ""),
                 }
 
         for entity_code, defaults in unique_region_data.items():
@@ -93,7 +95,9 @@ class Command(BaseCommand):
             )
 
             # Link branch to region via M2M relationship if cached
-            entity_code = entry.get("Entity_Code", "").strip()
+            # UPDATED KEY: Must match the column used in _import_regions
+            entity_code = entry.get("Contract Legal Entity Code", "").strip()
+            
             if entity_code and entity_code in region_cache:
                 branch.bg_regions.add(region_cache[entity_code])
 
@@ -101,4 +105,3 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(
                 f"  Branch {action}: {branch.BranchName}"
             ))
-
