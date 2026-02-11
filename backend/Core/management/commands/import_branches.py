@@ -22,7 +22,7 @@ class Command(BaseCommand):
         file_path = options['file_path']
 
         try:
-            with open(file_path, mode='r', encoding='utf-8-sig') as file:
+            with open(file_path, mode='r', encoding='utf-8') as file:
                 reader = csv.DictReader(file, delimiter=',')
                 data = list(reader)
 
