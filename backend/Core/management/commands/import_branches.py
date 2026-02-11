@@ -20,57 +20,57 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         file_path = options['file_path']
-
         try:
+            # Wir nutzen 'utf-8' (da du den BOM mit sed entfernt hast)
             with open(file_path, mode='r', encoding='utf-8') as file:
+                # Wir lesen die Header zuerst manuell ein, um sie zu säubern
                 reader = csv.DictReader(file, delimiter=',')
+                
+                # DER ENTSCHEIDENDE FIX:
+                # Wir strippen jedes Feld im Header (entfernt Leerzeichen davor und danach)
+                reader.fieldnames = [name.strip() for name in reader.fieldnames]
+                
                 data = list(reader)
 
-            # Phase 1: Import unique BG Regions and cache them
-            region_cache = self._import_regions(data)
+            # Prüfen wir kurz, was Python jetzt sieht:
+            self.stdout.write(f"Säuberung abgeschlossen. Erste Spalte ist jetzt: '{reader.fieldnames[0]}'")
 
-            # Phase 2: Import Branches and link to regions
+            # Jetzt sollte entry["Branch ID"] funktionieren
+            region_cache = self._import_regions(data)
             self._import_branches(data, region_cache)
 
-            self.stdout.write(self.style.SUCCESS("Successfully imported all data."))
-
-        except FileNotFoundError:
-            logger.error(f"Import failed: File not found at {file_path}")
-            self.stderr.write(self.style.ERROR(f"Datei nicht gefunden: {file_path}"))
         except Exception as e:
-            logger.exception(f"Unexpected error during branch import: {e}")
-            self.stderr.write(self.style.ERROR(f"Error: {e}"))
+            self.stderr.write(self.style.ERROR(f"Fehler: {e}"))
+        def _import_regions(self, data):
+            """Processes unique regions from the data and returns a lookup cache."""
+            self.stdout.write("Phase 1: Importing BG Regions...")
+            region_cache = {}
+            unique_region_data = {}
 
-    def _import_regions(self, data):
-        """Processes unique regions from the data and returns a lookup cache."""
-        self.stdout.write("Phase 1: Importing BG Regions...")
-        region_cache = {}
-        unique_region_data = {}
+            # Collect unique region data to minimize update_or_create calls
+            for entry in data:
+                # UPDATED KEY: Matches 'Contract Legal Entity Code' from your new CSV
+                entity_code = entry.get("Contract Legal Entity Code", "").strip()
+                
+                if entity_code and entity_code not in unique_region_data:
+                    unique_region_data[entity_code] = {
+                        # UPDATED KEYS: Match 'Contract Legal Entity: Name' and 'Unternehmensnummer'
+                        "Contract_Legal_Name": entry.get("Contract Legal Entity: Name", ""),
+                        "Company_Number": entry.get("Unternehmensnummer", ""),
+                    }
 
-        # Collect unique region data to minimize update_or_create calls
-        for entry in data:
-            # UPDATED KEY: Matches 'Contract Legal Entity Code' from your new CSV
-            entity_code = entry.get("Contract Legal Entity Code", "").strip()
-            
-            if entity_code and entity_code not in unique_region_data:
-                unique_region_data[entity_code] = {
-                    # UPDATED KEYS: Match 'Contract Legal Entity: Name' and 'Unternehmensnummer'
-                    "Contract_Legal_Name": entry.get("Contract Legal Entity: Name", ""),
-                    "Company_Number": entry.get("Unternehmensnummer", ""),
-                }
+            for entity_code, defaults in unique_region_data.items():
+                bg_region, created = BGRegion.objects.update_or_create(
+                    Entity_Code=entity_code,
+                    defaults=defaults
+                )
+                region_cache[entity_code] = bg_region
+                action = "Created" if created else "Updated"
+                self.stdout.write(self.style.SUCCESS(
+                    f"  Region {action}: {bg_region.Contract_Legal_Name} ({entity_code})"
+                ))
 
-        for entity_code, defaults in unique_region_data.items():
-            bg_region, created = BGRegion.objects.update_or_create(
-                Entity_Code=entity_code,
-                defaults=defaults
-            )
-            region_cache[entity_code] = bg_region
-            action = "Created" if created else "Updated"
-            self.stdout.write(self.style.SUCCESS(
-                f"  Region {action}: {bg_region.Contract_Legal_Name} ({entity_code})"
-            ))
-
-        return region_cache
+            return region_cache
 
     def _import_branches(self, data, region_cache):
         """Processes branches and links them to pre-loaded regions."""
