@@ -64,3 +64,17 @@ class CostCenterListView(generics.ListAPIView):
                     '^BranchName',
                     'BranchName',
                      ]
+
+
+class CompanyNumberLookupView(generics.ListAPIView):
+    """
+    Lookup Company_Number by branch search term.
+
+    Search by CostCenter or BranchName to get associated Company_Numbers
+    from related bg_regions.
+    """
+
+    queryset = BranchNetwork.objects.filter(Active=True).prefetch_related('bg_regions')
+    serializer_class = serializers.BranchUpdateSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['CostCenter', 'BranchName', '^BranchName']

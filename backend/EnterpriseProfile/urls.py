@@ -14,4 +14,6 @@ app_name = 'branchnetwork'
 urlpatterns = [
     path('', include(router.urls)),
     path('costcenters/', views.CostCenterListView.as_view(), name='costcenters'),
+    path('company-lookup/', views.CompanyNumberLookupView.as_view(), name='company-lookup'),
 ]
+
